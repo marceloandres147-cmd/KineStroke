@@ -1,0 +1,49 @@
+{
+  "name": "KineStroke — Escalas ACV · UTAC",
+  "short_name": "KineStroke",
+  "description": "Registro de escalas de ACV, criterios de movilización y carga de rehabilitación para el equipo de kinesiología.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#F3F6FB",
+  "theme_color": "#9C27B0",
+  "lang": "es-CL",
+  "categories": [
+    "medical",
+    "health",
+    "productivity"
+  ],
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Calculadora de carga",
+      "short_name": "Calculadora",
+      "url": "./#calculadora"
+    },
+    {
+      "name": "Camas del servicio",
+      "short_name": "Camas",
+      "url": "./#camas"
+    }
+  ]
+}
