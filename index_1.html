@@ -1,0 +1,3394 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Registro de escalas de ACV para el equipo de kinesiología del servicio UTAC.">
+<meta name="theme-color" content="#9C27B0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="KineStroke">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="KineStroke">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+<style>
+:root{padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px); color-scheme:light}
+body{margin:0; font:14px system-ui, sans-serif}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+<title>KineStroke — Escalas ACV · UTAC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#F3F6FB; --surface:#FFFFFF; --surface-2:#F8FAFD; --surface-3:#ECF1F8;
+  --line:#E1E8F2; --line-2:#C6D3E4;
+  --ink:#0E1A2C; --ink-2:#46586F; --ink-3:#7686A0;
+  --primary:#9C27B0; --primary-2:#7B1FA2; --primary-soft:#F5E6F8; --on-primary:#FFFFFF;
+  --accent:#E8620A; --accent-soft:#FDEBDC;
+  --ok:#0E8558; --ok-soft:#DBF2E8;
+  --warn:#B97400; --warn-soft:#FDF0D6;
+  --crit:#D02A1E; --crit-soft:#FCE3E1;
+  --shadow:0 1px 2px rgba(14,26,44,.05), 0 8px 22px rgba(14,26,44,.07);
+  --marca:#9C27B0; --marca-soft:#F5E6F8;
+  --r:12px; --r-sm:8px;
+  --display:'Familjen Grotesk', 'Trebuchet MS', sans-serif;
+  --body:'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+  --mono:'IBM Plex Mono', ui-monospace, 'SFMono-Regular', monospace;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--body); font-size:15px; line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:var(--display); margin:0; text-wrap:balance; letter-spacing:-.01em}
+button{font-family:inherit; font-size:inherit; cursor:pointer}
+input,select,textarea{font-family:inherit; font-size:inherit; color:inherit}
+.num{font-family:var(--mono); font-variant-numeric:tabular-nums}
+
+/* ---------- shell ---------- */
+.topbar{
+  position:sticky; top:env(safe-area-inset-top,0px); z-index:40;
+  background:var(--surface); border-bottom:1px solid var(--line);
+}
+.topbar-in{
+  max-width:1120px; margin:0 auto; padding:10px 16px;
+  display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+}
+.brand{display:flex; align-items:center; gap:10px; margin-right:auto; min-width:0}
+.mark{
+  width:38px; height:38px; border-radius:50%; flex:none; display:block;
+  box-shadow:0 2px 6px rgba(124,24,145,.28);
+}
+.brand-txt{min-width:0}
+.brand-name{display:block; color:var(--marca); font-family:var(--display); font-weight:700; font-size:19px; line-height:1.15; letter-spacing:-.02em}
+.brand-sub{display:block; font-size:10.5px; color:var(--ink-3); letter-spacing:.07em; text-transform:uppercase; font-weight:600}
+.icon-btn{
+  border:1px solid var(--line); background:var(--surface-2); color:var(--ink-2);
+  border-radius:var(--r-sm); padding:7px 11px; font-size:13px; font-weight:500;
+  display:inline-flex; align-items:center; gap:6px;
+}
+.icon-btn:hover{border-color:var(--line-2); color:var(--ink)}
+
+.nav{max-width:1120px; margin:0 auto; padding:0 16px; display:flex; gap:4px; overflow-x:auto; scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav button{
+  border:0; background:none; color:var(--ink-3); padding:10px 12px 11px;
+  font-weight:600; font-size:13.5px; white-space:nowrap;
+  border-bottom:2px solid transparent; margin-bottom:-1px;
+}
+.nav button[aria-selected="true"]{color:var(--primary); border-bottom-color:var(--primary)}
+.nav button:hover{color:var(--ink)}
+
+main{max-width:1120px; margin:0 auto; padding:20px 16px 72px}
+.view{display:grid; gap:18px}
+
+/* ---------- generic pieces ---------- */
+.card{background:var(--surface); border:1px solid var(--line); border-radius:var(--r); box-shadow:var(--shadow)}
+.card-pad{padding:16px}
+.card-head{
+  display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;
+  padding:14px 16px; border-bottom:1px solid var(--line);
+}
+.card-head h2,.card-head h3{font-size:16px; font-weight:600}
+.eyebrow{font-size:11px; letter-spacing:.09em; text-transform:uppercase; font-weight:600; color:var(--ink-3)}
+.muted{color:var(--ink-3)}
+.small{font-size:12.5px}
+.row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+.spacer{flex:1}
+.grid-2{display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(215px,1fr))}
+.grid-3{display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+
+.btn{
+  border:1px solid transparent; border-radius:var(--r-sm); padding:9px 14px;
+  font-weight:600; font-size:14px; background:var(--primary); color:var(--on-primary);
+  display:inline-flex; align-items:center; gap:7px;
+}
+.btn:hover{background:var(--primary-2)}
+.btn.ghost{background:var(--surface); color:var(--ink); border-color:var(--line-2)}
+.btn.ghost:hover{background:var(--surface-2)}
+.btn.danger{background:var(--crit-soft); color:var(--crit); border-color:transparent}
+.btn.sm{padding:6px 10px; font-size:13px}
+.btn:disabled{opacity:.42; cursor:not-allowed; background:var(--line-2); color:var(--surface)}
+.btn.ghost:disabled{background:var(--surface-2); color:var(--ink-3)}
+
+.pill{
+  display:inline-flex; align-items:center; gap:5px; border-radius:100px;
+  padding:3px 9px; font-size:11.5px; font-weight:600; letter-spacing:.01em;
+  background:var(--surface-3); color:var(--ink-2);
+}
+.pill.ok{background:var(--ok-soft); color:var(--ok)}
+.pill.warn{background:var(--warn-soft); color:var(--warn)}
+.pill.crit{background:var(--crit-soft); color:var(--crit)}
+.pill.primary{background:var(--primary-soft); color:var(--primary)}
+.pill.accent{background:var(--accent-soft); color:var(--accent)}
+
+label.field{display:grid; gap:4px; font-size:12.5px; font-weight:600; color:var(--ink-2)}
+label.field > input, label.field > select, label.field > textarea{
+  font-weight:400; color:var(--ink); background:var(--surface-2);
+  border:1px solid var(--line-2); border-radius:var(--r-sm); padding:8px 10px; width:100%;
+}
+label.field > input:focus-visible, label.field > select:focus-visible, label.field > textarea:focus-visible,
+button:focus-visible, .opt:focus-within{outline:2px solid var(--primary); outline-offset:1px}
+textarea{resize:vertical; min-height:70px}
+
+table{border-collapse:collapse; width:100%; font-size:13.5px}
+th{text-align:left; font-weight:600; color:var(--ink-3); font-size:11px; letter-spacing:.07em; text-transform:uppercase; padding:8px 10px; border-bottom:1px solid var(--line)}
+td{padding:9px 10px; border-bottom:1px solid var(--line)}
+tr:last-child td{border-bottom:0}
+.scroll-x{overflow-x:auto}
+
+/* ---------- patient cards ---------- */
+.bed-grid{display:grid; gap:12px; grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.pcard{
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--r);
+  box-shadow:var(--shadow); padding:14px; display:grid; gap:9px; text-align:left;
+  border-left:4px solid var(--line-2); width:100%;
+}
+.pcard:hover{border-color:var(--line-2); transform:translateY(-1px)}
+.pcard.due{border-left-color:var(--accent)}
+.pcard.ok{border-left-color:var(--ok)}
+.pcard.empty-bed{border-left-color:var(--line); background:var(--surface-2); box-shadow:none}
+.pcard-top{display:flex; align-items:center; gap:8px}
+.bed{font-family:var(--mono); font-weight:600; font-size:12px; color:var(--primary); background:var(--primary-soft); padding:2px 7px; border-radius:6px}
+.pname{font-family:var(--display); font-weight:700; font-size:18px; letter-spacing:.02em}
+.mini-scores{display:flex; gap:6px; flex-wrap:wrap}
+.mini{background:var(--surface-2); border:1px solid var(--line); border-radius:7px; padding:4px 7px; font-size:11px; line-height:1.25}
+.mini b{display:block; font-family:var(--mono); font-size:13.5px; color:var(--ink)}
+
+/* ---------- KPI ---------- */
+.kpis{display:grid; gap:10px; grid-template-columns:repeat(auto-fit,minmax(132px,1fr))}
+.kpi{background:var(--surface-2); border:1px solid var(--line); border-radius:var(--r-sm); padding:11px 12px}
+.kpi .k-label{font-size:11px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-3)}
+.kpi .k-val{font-family:var(--mono); font-size:24px; font-weight:600; line-height:1.15; margin-top:3px}
+.kpi .k-val small{font-size:12px; color:var(--ink-3); font-weight:500}
+.delta{font-family:var(--mono); font-size:12px; font-weight:600}
+.delta.up{color:var(--ok)} .delta.down{color:var(--crit)} .delta.flat{color:var(--ink-3)}
+
+/* ---------- scale form ---------- */
+.acc{
+  border:1.5px solid var(--line-2); border-radius:14px; background:var(--surface);
+  overflow:hidden; box-shadow:var(--shadow);
+}
+.acc + .acc{margin-top:10px}
+.acc-head{
+  width:100%; display:flex; align-items:center; gap:12px; padding:13px 14px; min-height:64px;
+  background:var(--surface); border:0; text-align:left; transition:background .15s ease;
+}
+.acc-chev{
+  width:36px; height:36px; border-radius:50%; flex:none; display:grid; place-items:center;
+  background:var(--marca-soft); color:var(--primary);
+  transition:transform .2s ease, background .15s ease, color .15s ease;
+}
+.acc-chev svg{width:19px; height:19px; display:block}
+.acc-txt{min-width:0; flex:1}
+.acc-title{font-family:var(--display); font-weight:700; font-size:16.5px; color:var(--ink); display:block}
+.acc-sub{font-size:11.5px; color:var(--ink-3); display:block; font-family:var(--body); font-weight:400; line-height:1.35}
+.acc-body{padding:2px 14px 14px; border-top:1px solid var(--line)}
+
+.acc-head:hover{background:var(--marca-soft)}
+.acc-head:hover .acc-chev{background:var(--primary); color:#fff}
+details.acc[open]{border-color:var(--primary)}
+details.acc[open] > .acc-head{background:var(--marca-soft); border-bottom:1px solid var(--line)}
+details.acc[open] .acc-chev{background:var(--primary); color:#fff; transform:rotate(90deg)}
+
+.acc-estado{
+  flex:none; display:inline-flex; align-items:center; border-radius:100px;
+  padding:6px 12px; font-family:var(--body); font-variant-numeric:tabular-nums;
+  font-weight:700; font-size:12.5px; letter-spacing:.01em;
+  background:var(--surface-3); color:var(--ink-3); white-space:nowrap;
+}
+.acc-estado.ok{background:var(--ok-soft); color:var(--ok)}
+.acc-estado.warn{background:var(--warn-soft); color:var(--warn)}
+.acc-estado.crit{background:var(--crit-soft); color:var(--crit)}
+.acc-estado.curso{background:var(--marca-soft); color:var(--primary)}
+.acc-pista{font-size:12px; color:var(--ink-3); margin:0 0 9px; display:flex; align-items:center; gap:6px}
+
+.item{padding:13px 0; border-bottom:1px dashed var(--line)}
+.item:last-child{border-bottom:0}
+.item-q{font-weight:600; font-size:14px; margin-bottom:8px; display:flex; gap:8px}
+.item-q .n{color:var(--primary); font-family:var(--mono); font-size:13px; flex:none}
+.opts{display:grid; gap:5px}
+.opt{
+  display:flex; gap:9px; align-items:flex-start; padding:7px 9px; border-radius:var(--r-sm);
+  border:1px solid var(--line); background:var(--surface-2); font-size:13px; cursor:pointer;
+}
+.opt:hover{border-color:var(--line-2)}
+.opt input{margin:2px 0 0; accent-color:var(--primary); flex:none}
+.opt .sc{font-family:var(--mono); font-weight:600; color:var(--ink-3); flex:none; min-width:26px}
+.opt.sel{background:var(--primary-soft); border-color:var(--primary)}
+.opt.sel .sc{color:var(--primary)}
+.opts.inline{display:flex; flex-wrap:wrap; gap:6px}
+.opts.inline .opt{flex:1 1 auto; justify-content:center; min-width:52px; text-align:center}
+
+.scale-total{
+  display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  margin-top:12px; padding:11px 13px; border-radius:var(--r-sm);
+  background:var(--surface-3); border:1px solid var(--line);
+}
+.scale-total .tv{font-family:var(--mono); font-size:22px; font-weight:600}
+
+.alert{border-radius:var(--r-sm); padding:10px 12px; font-size:13px; display:flex; gap:9px; align-items:flex-start}
+.alert.warn{background:var(--warn-soft); color:var(--warn)}
+.alert.crit{background:var(--crit-soft); color:var(--crit)}
+.alert.info{background:var(--primary-soft); color:var(--primary)}
+.alert b{font-weight:600}
+
+.chart-wrap{padding:6px 2px 0}
+svg.chart{width:100%; height:auto; display:block; overflow:visible}
+
+.copybox{width:100%; min-height:130px; font-family:var(--mono); font-size:11.5px; background:var(--surface-2); border:1px solid var(--line-2); border-radius:var(--r-sm); padding:10px; color:var(--ink)}
+
+.demo-banner{
+  display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+  background:var(--accent-soft); color:var(--accent); border-radius:var(--r-sm);
+  padding:10px 13px; font-size:13px; font-weight:500;
+}
+.footnote{font-size:11.5px; color:var(--ink-3); line-height:1.5}
+.ref-list{display:grid; gap:7px; font-size:13px; padding-left:18px; margin:0}
+.ref-list li{color:var(--ink-2)}
+.legend{display:flex; gap:12px; flex-wrap:wrap; font-size:11.5px; color:var(--ink-3)}
+.legend i{width:10px; height:10px; border-radius:3px; display:inline-block; margin-right:4px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important; animation:none!important}}
+@media print{.topbar,.nav,.no-print{display:none!important} body{background:#fff}}
+</style>
+
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-in">
+    <div class="brand">
+      <img class="mark" id="brandIcon" alt="KineStroke" src="data:image/png;base64,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">
+      <span class="brand-txt">
+        <span class="brand-name">KineStroke</span>
+        <span class="brand-sub">Escalas ACV &middot; UTAC</span>
+      </span>
+    </div>
+    <button class="icon-btn" id="btnNuevoPaciente">+ Paciente</button>
+  </div>
+  <nav class="nav" role="tablist" aria-label="Secciones">
+    <button role="tab" data-view="pacientes" aria-selected="true">Camas</button>
+    <button role="tab" data-view="paciente" aria-selected="false">Ficha</button>
+    <button role="tab" data-view="evaluacion" aria-selected="false">Evaluación</button>
+    <button role="tab" data-view="calculadora" aria-selected="false">Calculadora</button>
+    <button role="tab" data-view="referencia" aria-selected="false">Referencia</button>
+    <button role="tab" data-view="datos" aria-selected="false">Datos</button>
+  </nav>
+</header>
+
+<main>
+  <!-- ============ CAMAS ============ -->
+  <section class="view" id="view-pacientes">
+    <div id="avisoRespaldo"></div>
+
+    <div id="demoBanner" hidden class="demo-banner no-print">
+      <span>Estás viendo <b>dos pacientes de ejemplo</b> para mostrar cómo funciona la app. Los datos son ficticios.</span>
+      <button class="btn sm ghost" id="btnBorrarDemo">Borrar ejemplos</button>
+    </div>
+
+    <div class="row">
+      <div>
+        <p class="eyebrow">Unidad de Tratamiento del Ataque Cerebrovascular</p>
+        <h1 style="font-size:24px">Camas del servicio</h1>
+      </div>
+      <span class="spacer"></span>
+      <div class="legend">
+        <span><i style="background:var(--ok)"></i>Control al día</span>
+        <span><i style="background:var(--accent)"></i>Control pendiente (&ge;7 días)</span>
+        <span><i style="background:var(--line-2)"></i>Sin evaluaciones</span>
+      </div>
+    </div>
+
+    <div class="bed-grid" id="bedGrid"></div>
+
+    <div class="card card-pad" id="resumenServicio"></div>
+  </section>
+
+  <!-- ============ FICHA ============ -->
+  <section class="view" id="view-paciente" hidden></section>
+
+  <!-- ============ EVALUACION ============ -->
+  <section class="view" id="view-evaluacion" hidden></section>
+
+  <!-- ============ CALCULADORA ============ -->
+  <section class="view" id="view-calculadora" hidden></section>
+
+  <!-- ============ REFERENCIA ============ -->
+  <section class="view" id="view-referencia" hidden></section>
+
+  <!-- ============ DATOS ============ -->
+  <section class="view" id="view-datos" hidden></section>
+</main>
+
+<script>
+"use strict";
+/* ============================================================
+   KineStroke — registro de escalas para pacientes con ACV
+   Equipo de Kinesiología · UTAC
+   Almacenamiento 100% local (localStorage del navegador).
+   ============================================================ */
+
+const CAMAS = ["531 A","531 C","532 A","532 C","533 A","533 C"];
+const STORE_KEY = "kinestroke.v1";
+
+/* ---------- utilidades ---------- */
+const $ = (s, r) => (r || document).querySelector(s);
+const el = (t, p) => Object.assign(document.createElement(t), p || {});
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) =>
+  ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const hoy = () => new Date().toISOString().slice(0, 10);
+function fFecha(iso){
+  if(!iso) return "—";
+  const [y,m,d] = iso.split("-");
+  return `${d}-${m}-${y}`;
+}
+function diasEntre(a, b){
+  if(!a || !b) return null;
+  return Math.round((new Date(b + "T00:00") - new Date(a + "T00:00")) / 86400000);
+}
+/* Acepta coma o punto como separador decimal: en Chile el teclado del
+   teléfono entrega coma, y un campo numérico estricto la descarta. */
+function num(v){
+  if(v === null || v === undefined) return null;
+  const n = parseFloat(String(v).trim().replace(",", "."));
+  return Number.isFinite(n) ? n : null;
+}
+
+/* --- confirmación táctil y bloqueo de pantalla (se usan en todo el archivo) --- */
+function vibrar(patron){
+  try{ if(navigator.vibrate) navigator.vibrate(patron || 12); }catch(e){}
+}
+let bloqueoPantalla = null;
+async function pedirBloqueoPantalla(){
+  try{
+    if("wakeLock" in navigator && !bloqueoPantalla)
+      bloqueoPantalla = await navigator.wakeLock.request("screen");
+  }catch(e){}
+}
+function soltarBloqueoPantalla(){
+  try{ if(bloqueoPantalla){ bloqueoPantalla.release(); bloqueoPantalla = null; } }catch(e){}
+}
+document.addEventListener("visibilitychange", () => {
+  if(document.visibilityState === "visible" && typeof Chrono !== "undefined" && Chrono.corriendo)
+    pedirBloqueoPantalla();
+});
+
+/* ============================================================
+   DEFINICIÓN DE LAS ESCALAS
+   ============================================================ */
+
+const OPC_TCT = [
+  [0,  "No es capaz de realizar el movimiento sin ayuda"],
+  [12, "Lo realiza, pero de forma anormal: se tracciona de la ropa de cama, de una cuerda o trapecio, o usa los brazos"],
+  [25, "Completa el movimiento con normalidad"]
+];
+const OPC_TCT_EQ = [
+  [0,  "No logra mantenerse erguido durante 30 s por ningún medio"],
+  [12, "Necesita tocar algo con las manos para mantenerse erguido"],
+  [25, "Se mantiene erguido 30 s sin apoyo de las manos"]
+];
+const OPC_PASS_B = [
+  [3, "Lo realiza sin ayuda"],
+  [2, "Lo realiza con poca ayuda"],
+  [1, "Lo realiza con mucha ayuda"],
+  [0, "No puede realizarlo"]
+];
+const OPC_MRC = [
+  [0, "0 — Sin contracción visible ni palpable"],
+  [1, "1 — Contracción visible o palpable, sin movimiento"],
+  [2, "2 — Movimiento completo con gravedad eliminada"],
+  [3, "3 — Movimiento completo contra gravedad"],
+  [4, "4 — Movimiento contra gravedad y resistencia parcial"],
+  [5, "5 — Fuerza normal"]
+];
+
+const SCALES = {
+
+  /* ---------------- TCT ---------------- */
+  tct: {
+    key:"tct", sigla:"TCT", nombre:"Trunk Control Test",
+    desc:"Control de tronco · 4 ítems · 0–100",
+    tipo:"items", max:100, mejor:"alto",
+    fuente:"Collin C, Wade D. J Neurol Neurosurg Psychiatry 1990;53:576-9.",
+    items:[
+      {id:"rodarDebil",  q:"Rodar hacia el lado débil (hemiparético)", opts:OPC_TCT},
+      {id:"rodarFuerte", q:"Rodar hacia el lado fuerte (no parético)", opts:OPC_TCT},
+      {id:"equilibrio",  q:"Mantener el equilibrio sentado (borde de cama, pies apoyados, 30 s)", opts:OPC_TCT_EQ},
+      {id:"incorporar",  q:"Incorporarse desde decúbito supino hasta sedente", opts:OPC_TCT}
+    ],
+    bandas:[
+      {max:24,  txt:"Control de tronco muy comprometido", tono:"crit"},
+      {max:49,  txt:"Control de tronco severamente comprometido", tono:"crit"},
+      {max:74,  txt:"Control de tronco parcial", tono:"warn"},
+      {max:99,  txt:"Control de tronco casi completo", tono:"ok"},
+      {max:100, txt:"Control de tronco normal", tono:"ok"}
+    ],
+    nota:"Un TCT ≥ 40–50 puntos en las primeras semanas se asocia a mayor probabilidad de marcha independiente; interpretar siempre junto al resto del examen."
+  },
+
+  /* ---------------- PASS ---------------- */
+  pass: {
+    key:"pass", sigla:"PASS", nombre:"Postural Assessment Scale for Stroke Patients",
+    desc:"Control postural · 12 ítems · 0–36",
+    tipo:"items", max:36, mejor:"alto",
+    fuente:"Benaim C, et al. Stroke 1999;30:1862-8.",
+    subtotales:[
+      {nombre:"A · Mantener una postura", desde:0, hasta:4, max:15},
+      {nombre:"B · Cambiar de postura",   desde:5, hasta:11, max:21}
+    ],
+    items:[
+      {id:"p1", grupo:"A · Mantener una postura", q:"Sedente sin apoyo (camilla sin respaldo, pies apoyados en el suelo)", opts:[
+        [3,"Permanece sentado 5 minutos sin apoyo"],
+        [2,"Permanece sentado más de 10 segundos sin apoyo"],
+        [1,"Se sienta con apoyo leve (por ejemplo, de una mano)"],
+        [0,"No puede sentarse"]]},
+      {id:"p2", grupo:"A · Mantener una postura", q:"Bipedestación con apoyo", opts:[
+        [3,"De pie con el apoyo de una sola mano"],
+        [2,"De pie con apoyo moderado de una persona"],
+        [1,"De pie con apoyo firme de dos personas"],
+        [0,"No puede ponerse de pie, ni siquiera con apoyo"]]},
+      {id:"p3", grupo:"A · Mantener una postura", q:"Bipedestación sin apoyo", opts:[
+        [3,"Más de 1 minuto sin apoyo y realiza simultáneamente movimientos de brazos a la altura del hombro"],
+        [2,"1 minuto sin apoyo, o de pie con ligera asimetría"],
+        [1,"10 segundos sin apoyo, o se apoya intensamente sobre una pierna"],
+        [0,"No puede mantenerse de pie sin apoyo"]]},
+      {id:"p4", grupo:"A · Mantener una postura", q:"Apoyo monopodal sobre la pierna NO parética", opts:[
+        [3,"Más de 10 segundos"],[2,"Más de 5 segundos"],[1,"Unos pocos segundos"],[0,"No puede"]]},
+      {id:"p5", grupo:"A · Mantener una postura", q:"Apoyo monopodal sobre la pierna PARÉTICA", opts:[
+        [3,"Más de 10 segundos"],[2,"Más de 5 segundos"],[1,"Unos pocos segundos"],[0,"No puede"]]},
+      {id:"p6",  grupo:"B · Cambiar de postura", q:"Supino → decúbito lateral hacia el lado parético", opts:OPC_PASS_B},
+      {id:"p7",  grupo:"B · Cambiar de postura", q:"Supino → decúbito lateral hacia el lado no parético", opts:OPC_PASS_B},
+      {id:"p8",  grupo:"B · Cambiar de postura", q:"Supino → sedente en el borde de la camilla", opts:OPC_PASS_B},
+      {id:"p9",  grupo:"B · Cambiar de postura", q:"Sedente en el borde de la camilla → supino", opts:OPC_PASS_B},
+      {id:"p10", grupo:"B · Cambiar de postura", q:"Sedente → bipedestación", opts:OPC_PASS_B},
+      {id:"p11", grupo:"B · Cambiar de postura", q:"Bipedestación → sedente", opts:OPC_PASS_B},
+      {id:"p12", grupo:"B · Cambiar de postura", q:"De pie, recoger un lápiz del suelo", opts:OPC_PASS_B}
+    ],
+    bandas:[
+      {max:11, txt:"Control postural severamente comprometido", tono:"crit"},
+      {max:23, txt:"Control postural moderadamente comprometido", tono:"warn"},
+      {max:32, txt:"Control postural levemente comprometido", tono:"ok"},
+      {max:36, txt:"Control postural conservado", tono:"ok"}
+    ],
+    nota:"Registrar siempre la categoría más baja que el paciente cumple en cada ítem. Puntajes altos en la sección A con sección B baja orientan a un problema de transferencias más que de equilibrio estático."
+  },
+
+  /* ---------------- TUG ---------------- */
+  tug: {
+    key:"tug", sigla:"TUG", nombre:"Timed Up and Go",
+    desc:"Movilidad funcional · segundos",
+    tipo:"tiempo", mejor:"bajo",
+    fuente:"Podsiadlo & Richardson, 1991. Cortes en ACV: Andersson et al., 2006. MDC 2,9 s (Flansbjer et al., 2005).",
+    protocolo:[
+      "Silla estándar con apoyabrazos (asiento ~46 cm), espalda apoyada y brazos sobre los apoyabrazos.",
+      "Marcar 3 metros desde las patas delanteras de la silla, trayecto libre de obstáculos.",
+      "A la orden «ya»: ponerse de pie, caminar 3 m, girar, volver y sentarse.",
+      "Calzado habitual y ayuda técnica habitual (registrarla). Se permite un intento de práctica.",
+      "El cronómetro parte con la orden verbal y se detiene al sentarse completamente."
+    ],
+    bandas:[
+      {max:9.99,  txt:"Independiente con o sin ayuda técnica", tono:"ok"},
+      {max:13.49, txt:"Independiente para las transferencias principales", tono:"ok"},
+      {max:19.99, txt:"Independiente para transferencias · riesgo de caídas aumentado (≥13,5 s)", tono:"warn"},
+      {max:30,    txt:"Movilidad reducida · riesgo de caídas alto", tono:"warn"},
+      {max:1e9,   txt:"Requiere asistencia para la movilidad", tono:"crit"}
+    ],
+    nota:"En personas con ACV, > 14 s identifica riesgo aumentado de caídas (Andersson 2006). El cambio mínimo detectable en ACV crónico es 2,9 s: diferencias menores pueden ser variabilidad de la medición."
+  },
+
+  /* ---------------- OPS ---------------- */
+  ops: {
+    key:"ops", sigla:"OPS", nombre:"Orpington Prognostic Score",
+    desc:"Pronóstico funcional · 1,6 – 6,8",
+    tipo:"items", base:1.6, max:6.8, min:1.6, mejor:"bajo", decimales:1,
+    fuente:"Kalra L, Crome P. J Am Geriatr Soc 1993;41:396-400.",
+    items:[
+      {id:"motor", q:"Déficit motor del brazo (grado MRC del mejor grupo extensor del miembro afectado)", opts:[
+        [0,"MRC grado 5 — fuerza normal"],
+        [0.4,"MRC grado 4 — fuerza disminuida"],
+        [0.8,"MRC grado 3 — movimiento contra gravedad"],
+        [1.2,"MRC grado 2 — movimiento con gravedad eliminada"],
+        [1.6,"MRC grado 1 — esbozo de contracción"]]},
+      {id:"propio", q:"Propiocepción (ojos cerrados, localizar el pulgar afectado)", opts:[
+        [0,"Lo localiza con exactitud"],
+        [0.4,"Lo localiza con leve dificultad"],
+        [0.8,"Lo encuentra recorriendo el brazo"],
+        [1.2,"No logra encontrar el pulgar"]]},
+      {id:"equilibrio", q:"Equilibrio", opts:[
+        [0,"Camina 3 metros (10 pies) sin ayuda"],
+        [0.4,"Mantiene la bipedestación"],
+        [0.8,"Mantiene la sedestación"],
+        [1.2,"Sin equilibrio en sedente"]]},
+      {id:"cognicion", q:"Cognición (Test Mental Abreviado de Hodkinson, 0–10)", opts:[
+        [0,"Puntaje 10"],
+        [0.4,"Puntaje 8–9"],
+        [0.8,"Puntaje 5–7"],
+        [1.2,"Puntaje 0–4"]]}
+    ],
+    bandas:[
+      {max:3.19, txt:"ACV leve — buen pronóstico funcional", tono:"ok"},
+      {max:5.2,  txt:"ACV moderado — se beneficia de rehabilitación intensiva", tono:"warn"},
+      {max:99,   txt:"ACV severo — pronóstico funcional desfavorable", tono:"crit"}
+    ],
+    nota:"Puntaje total = 1,6 + motor + propiocepción + equilibrio + cognición. La validación original se realizó a las 2 semanas del evento; aplicado antes tiende a sobreestimar la severidad."
+  },
+
+  /* ---------------- Barthel ---------------- */
+  barthel: {
+    key:"barthel", sigla:"Barthel", nombre:"Índice de Barthel",
+    desc:"Independencia en AVD · 0–100",
+    tipo:"items", max:100, mejor:"alto",
+    fuente:"Mahoney FI, Barthel DW. Md State Med J 1965;14:61-5.",
+    items:[
+      {id:"b1", q:"Alimentación", opts:[[10,"Independiente"],[5,"Necesita ayuda (cortar, untar)"],[0,"Dependiente"]]},
+      {id:"b2", q:"Baño / ducha", opts:[[5,"Independiente"],[0,"Dependiente"]]},
+      {id:"b3", q:"Aseo personal (lavarse la cara, peinarse, afeitarse, lavarse los dientes)", opts:[[5,"Independiente"],[0,"Dependiente"]]},
+      {id:"b4", q:"Vestirse", opts:[[10,"Independiente"],[5,"Necesita ayuda, hace al menos la mitad"],[0,"Dependiente"]]},
+      {id:"b5", q:"Control de deposiciones", opts:[[10,"Continente"],[5,"Episodio ocasional de incontinencia"],[0,"Incontinente"]]},
+      {id:"b6", q:"Control de micción", opts:[[10,"Continente"],[5,"Episodio ocasional / necesita ayuda con el dispositivo"],[0,"Incontinente o sondado dependiente"]]},
+      {id:"b7", q:"Uso del inodoro", opts:[[10,"Independiente"],[5,"Necesita algo de ayuda"],[0,"Dependiente"]]},
+      {id:"b8", q:"Traslado cama – silla", opts:[[15,"Independiente"],[10,"Mínima ayuda física o supervisión"],[5,"Gran ayuda (una persona entrenada), se mantiene sentado"],[0,"Incapaz, no mantiene la sedestación"]]},
+      {id:"b9", q:"Deambulación", opts:[[15,"Independiente 50 m (puede usar ayuda técnica)"],[10,"Camina 50 m con ayuda o supervisión de una persona"],[5,"Independiente en silla de ruedas 50 m"],[0,"Inmóvil"]]},
+      {id:"b10", q:"Subir y bajar escaleras", opts:[[10,"Independiente"],[5,"Necesita ayuda o supervisión"],[0,"Incapaz"]]}
+    ],
+    bandas:[
+      {max:19,  txt:"Dependencia total", tono:"crit"},
+      {max:39,  txt:"Dependencia grave", tono:"crit"},
+      {max:59,  txt:"Dependencia moderada", tono:"warn"},
+      {max:99,  txt:"Dependencia leve", tono:"ok"},
+      {max:100, txt:"Independiente", tono:"ok"}
+    ],
+    nota:"Puntuar lo que el paciente HACE, no lo que podría hacer. Se registra el desempeño de las últimas 24–48 horas."
+  },
+
+  /* ---------------- Berg ---------------- */
+  berg: {
+    key:"berg", sigla:"Berg", nombre:"Escala de Equilibrio de Berg",
+    desc:"Equilibrio funcional · 14 ítems · 0–56",
+    tipo:"items", max:56, mejor:"alto",
+    fuente:"Berg K, et al. Can J Public Health 1992;83(Suppl 2):S7-11.",
+    items:[
+      {id:"g1", q:"Sedente → bipedestación", opts:[
+        [4,"Se levanta sin usar las manos y se estabiliza solo"],[3,"Se levanta solo usando las manos"],
+        [2,"Se levanta usando las manos tras varios intentos"],[1,"Necesita ayuda mínima para levantarse o estabilizarse"],[0,"Necesita ayuda moderada o máxima"]]},
+      {id:"g2", q:"Bipedestación sin apoyo", opts:[
+        [4,"De pie con seguridad 2 minutos"],[3,"De pie 2 minutos con supervisión"],[2,"De pie 30 segundos sin apoyo"],
+        [1,"Necesita varios intentos para estar 30 s de pie sin apoyo"],[0,"No puede estar de pie 30 s sin ayuda"]]},
+      {id:"g3", q:"Sedente sin respaldo, pies apoyados en el suelo", opts:[
+        [4,"Sentado con seguridad 2 minutos"],[3,"Sentado 2 minutos con supervisión"],[2,"Sentado 30 segundos"],
+        [1,"Sentado 10 segundos"],[0,"No se mantiene sentado 10 s sin apoyo"]]},
+      {id:"g4", q:"Bipedestación → sedente", opts:[
+        [4,"Se sienta con seguridad, uso mínimo de las manos"],[3,"Controla el descenso usando las manos"],
+        [2,"Apoya la parte posterior de los muslos en la silla para controlar el descenso"],
+        [1,"Se sienta solo, pero el descenso es descontrolado"],[0,"Necesita ayuda para sentarse"]]},
+      {id:"g5", q:"Transferencias (silla con y sin apoyabrazos)", opts:[
+        [4,"Transfiere con seguridad, uso mínimo de las manos"],[3,"Transfiere con seguridad, uso evidente de las manos"],
+        [2,"Transfiere con indicaciones verbales o supervisión"],[1,"Necesita una persona de ayuda"],[0,"Necesita dos personas de ayuda o supervisión"]]},
+      {id:"g6", q:"Bipedestación con ojos cerrados", opts:[
+        [4,"De pie 10 segundos con seguridad"],[3,"De pie 10 segundos con supervisión"],[2,"De pie 3 segundos"],
+        [1,"No cierra los ojos 3 s pero permanece estable"],[0,"Necesita ayuda para no caer"]]},
+      {id:"g7", q:"Bipedestación con los pies juntos", opts:[
+        [4,"Junta los pies solo y se mantiene 1 minuto con seguridad"],[3,"Junta los pies solo y se mantiene 1 minuto con supervisión"],
+        [2,"Junta los pies solo pero no mantiene 30 segundos"],[1,"Necesita ayuda para colocarse, mantiene 15 segundos"],
+        [0,"Necesita ayuda y no mantiene 15 segundos"]]},
+      {id:"g8", q:"Alcance anterior con el brazo extendido", opts:[
+        [4,"Alcanza con confianza más de 25 cm"],[3,"Alcanza más de 12,5 cm con seguridad"],[2,"Alcanza más de 5 cm"],
+        [1,"Alcanza pero necesita supervisión"],[0,"Pierde el equilibrio o necesita apoyo externo"]]},
+      {id:"g9", q:"Recoger un objeto del suelo", opts:[
+        [4,"Lo recoge con facilidad y seguridad"],[3,"Lo recoge pero necesita supervisión"],
+        [2,"No lo recoge, llega a 2–5 cm y mantiene el equilibrio"],[1,"No lo recoge, necesita supervisión al intentarlo"],[0,"No lo intenta o necesita ayuda"]]},
+      {id:"g10", q:"Girar para mirar hacia atrás por ambos lados", opts:[
+        [4,"Mira hacia atrás por ambos lados con buen desplazamiento del peso"],[3,"Mira hacia atrás solo por un lado"],
+        [2,"Solo gira lateralmente, mantiene el equilibrio"],[1,"Necesita supervisión al girar"],[0,"Necesita ayuda para no perder el equilibrio"]]},
+      {id:"g11", q:"Giro de 360°", opts:[
+        [4,"En 4 segundos o menos hacia ambos lados"],[3,"En 4 segundos o menos hacia un solo lado"],
+        [2,"Gira con seguridad pero lentamente"],[1,"Necesita supervisión o indicaciones verbales"],[0,"Necesita ayuda al girar"]]},
+      {id:"g12", q:"Apoyo alternado del pie sobre un escalón", opts:[
+        [4,"De pie sin apoyo, 8 apoyos en 20 segundos"],[3,"8 apoyos en más de 20 segundos"],
+        [2,"4 apoyos sin ayuda, con supervisión"],[1,"Más de 2 apoyos con ayuda mínima"],[0,"Necesita ayuda para no caer o no lo intenta"]]},
+      {id:"g13", q:"Bipedestación con un pie delante del otro (tándem)", opts:[
+        [4,"Coloca el pie en tándem solo y mantiene 30 segundos"],[3,"Coloca el pie por delante del otro solo y mantiene 30 segundos"],
+        [2,"Da un pequeño paso solo y mantiene 30 segundos"],[1,"Necesita ayuda para el paso, mantiene 15 segundos"],
+        [0,"Pierde el equilibrio al dar el paso o al estar de pie"]]},
+      {id:"g14", q:"Apoyo monopodal", opts:[
+        [4,"Levanta la pierna solo y mantiene más de 10 segundos"],[3,"Mantiene más de 5 segundos"],[2,"Mantiene 3 segundos o más"],
+        [1,"Lo intenta, no mantiene 3 s, pero permanece de pie solo"],[0,"No puede intentarlo o necesita ayuda"]]}
+    ],
+    bandas:[
+      {max:20, txt:"Riesgo de caídas alto · dependiente de silla de ruedas", tono:"crit"},
+      {max:40, txt:"Riesgo de caídas moderado · marcha con asistencia", tono:"warn"},
+      {max:44, txt:"Riesgo de caídas aumentado (< 45 puntos)", tono:"warn"},
+      {max:56, txt:"Riesgo de caídas bajo · equilibrio funcional", tono:"ok"}
+    ],
+    nota:"Requiere bipedestación: aplicar solo cuando el paciente tolera de pie con seguridad. Puntajes bajo 45 se asocian a mayor riesgo de caídas."
+  },
+
+  /* ---------------- MRC ---------------- */
+  mrc: {
+    key:"mrc", sigla:"MRC", nombre:"Fuerza muscular MRC por segmento (hemicuerpo afectado)",
+    desc:"Braquial proximal · medial · distal + crural · 0–20",
+    tipo:"items", max:20, mejor:"alto",
+    fuente:"Medical Research Council. Aids to the examination of the peripheral nervous system, 1976.",
+    items:[
+      {id:"hombro",  seg:"hombro",  q:"Braquial PROXIMAL — hombro", ayuda:"Flexores y abductores de hombro", opts:OPC_MRC},
+      {id:"codo",    seg:"codo",    q:"Braquial MEDIAL — codo", ayuda:"Flexores y extensores de codo", opts:OPC_MRC},
+      {id:"muneca",  seg:"muneca",  q:"Braquial DISTAL — muñeca y mano", ayuda:"Extensores de muñeca y prensión", opts:OPC_MRC},
+      {id:"crural",  seg:"crural",  q:"CRURAL — extremidad inferior", ayuda:"Flexores de cadera y extensores de rodilla", opts:OPC_MRC}
+    ],
+    bandas:[
+      {max:6,  txt:"Debilidad severa del hemicuerpo", tono:"crit"},
+      {max:13, txt:"Debilidad moderada", tono:"warn"},
+      {max:18, txt:"Debilidad leve", tono:"ok"},
+      {max:20, txt:"Fuerza conservada", tono:"ok"}
+    ],
+    nota:"Puntaje sumatorio del hemicuerpo afectado (4 segmentos × 0–5). El esquema corporal se dibuja con estos valores. Sigue el reclutamiento segmentario, pero no reemplaza la valoración del control motor selectivo."
+  }
+};
+
+const ESCALAS_PRINCIPALES = ["tct","pass","tug","ops"];
+const ESCALAS_EXTRA = ["barthel","berg","mrc"];
+const ESCALAS_ORDEN = ESCALAS_PRINCIPALES.concat(ESCALAS_EXTRA);
+
+/* ---------- Test Mental Abreviado de Hodkinson (apoyo para el ítem cognitivo del OPS) ---------- */
+const AMT = [
+  "Edad del paciente",
+  "Hora aproximada (sin mirar el reloj)",
+  "Dirección para recordar: «Calle Los Aromos 42» (se pregunta al final)",
+  "Nombre del lugar donde se encuentra (hospital / servicio)",
+  "Año actual",
+  "Fecha de nacimiento",
+  "Mes actual",
+  "Años de la Primera Guerra Mundial (1914–1918)",
+  "Nombre del Presidente o Presidenta actual",
+  "Contar hacia atrás de 20 a 1"
+];
+
+/* ---------- parámetros generales de seguridad (no dependen del tipo de ACV) ---------- */
+const VITALES = [
+  {id:"pas",  label:"PAS",  unidad:"mmHg", contextual:true},
+  {id:"pad",  label:"PAD",  unidad:"mmHg", contextual:true},
+  {id:"fc",   label:"FC",   unidad:"lpm",  crit:(v)=> v<50 || v>120, warn:(v)=> (v>=50&&v<60)||(v>100&&v<=120)},
+  {id:"spo2", label:"SpO₂", unidad:"%",    crit:(v)=> v<90,          warn:(v)=> v>=90&&v<93},
+  {id:"fr",   label:"FR",   unidad:"rpm",  crit:(v)=> v<10 || v>30,  warn:(v)=> v>24&&v<=30}
+];
+
+/* Estado de un signo vital. Para PAS y PAD el límite depende del paciente
+   (tipo de ACV y terapia de reperfusión), según el protocolo del servicio. */
+function estadoVital(id, val, cr){
+  if(val === null || val === undefined) return "";
+  if(id === "pas"){
+    if(val < 90) return "crit";                 /* hipotensión: criterio general */
+    if(!cr) return "";
+    if(val >= cr.pas) return "crit";
+    if(val >= cr.pas - 15) return "warn";
+    return "";
+  }
+  if(id === "pad"){
+    if(!cr) return "";
+    if(val >= cr.pad) return "crit";
+    if(val >= cr.pad - 10) return "warn";
+    return "";
+  }
+  const def = VITALES.find(d => d.id === id);
+  if(!def || !def.crit) return "";
+  if(def.crit(val)) return "crit";
+  if(def.warn && def.warn(val)) return "warn";
+  return "";
+}
+
+function evaluarVitales(v, p){
+  const alertas = [];
+  if(!v) return alertas;
+  const cr = p ? criteriosMovilizacion(p) : null;
+  VITALES.forEach(def => {
+    const val = num(v[def.id]);
+    if(val === null) return;
+    const est = estadoVital(def.id, val, cr);
+    if(!est) return;
+    let txt;
+    if(def.id === "pas" && val < 90)
+      txt = `PAS ${val} mmHg — hipotensión: riesgo de intolerancia ortostática al sedestar o bipedestar`;
+    else if(def.contextual && cr && est === "crit")
+      txt = `${def.label} ${val} mmHg — supera el límite de ${def.id === "pas" ? cr.pas : cr.pad} mmHg que el protocolo fija para ${cr.etiqueta}`;
+    else if(def.contextual && cr)
+      txt = `${def.label} ${val} mmHg — cerca del límite de ${def.id === "pas" ? cr.pas : cr.pad} mmHg: controlar durante la sesión`;
+    else if(est === "crit")
+      txt = `${def.label} ${val} ${def.unidad} fuera del rango seguro para movilización`;
+    else
+      txt = `${def.label} ${val} ${def.unidad} en rango límite: monitorizar durante la sesión`;
+    alertas.push({tono:est, txt});
+  });
+  return alertas;
+}
+
+const TIPOS_ACV = ["Isquémico","Hemorrágico intracerebral","Hemorragia subaracnoidea","Isquémico con transformación hemorrágica","Trombosis venosa cerebral","Por precisar"];
+const SUBTIPOS = ["TACI (total anterior)","PACI (parcial anterior)","LACI (lacunar)","POCI (circulación posterior)","No aplica / por precisar"];
+</script>
+
+<style>
+details.acc > summary.acc-head{list-style:none; cursor:pointer}
+details.acc > summary.acc-head::-webkit-details-marker{display:none}
+details.acc[open] .chev{transform:rotate(90deg)}
+.acc-score{font-family:var(--mono); font-weight:600; font-size:15px; margin-left:auto; flex:none; color:var(--ink-2)}
+.noeval-row{display:flex; gap:8px; align-items:center; padding:10px 0 4px; font-size:13px; color:var(--ink-2); font-weight:500}
+.noeval-row input{accent-color:var(--primary)}
+.disabled-block{opacity:.38; pointer-events:none}
+.amt{display:grid; gap:4px; margin-top:8px}
+.amt label{display:flex; gap:8px; align-items:flex-start; font-size:12.5px; background:var(--surface-2); border:1px solid var(--line); border-radius:6px; padding:5px 8px}
+.amt input{accent-color:var(--primary); margin-top:2px}
+.vit-grid{display:grid; gap:10px; grid-template-columns:repeat(auto-fit,minmax(104px,1fr))}
+.timeline-note{font-size:12.5px; color:var(--ink-2); white-space:pre-wrap}
+</style>
+
+<script>
+"use strict";
+
+/* ============================================================
+   ESTADO Y PERSISTENCIA (solo en este dispositivo)
+   ============================================================ */
+let state = { version:1, patients:[], demo:false };
+let ui = { view:"pacientes", pid:null, draft:null, chartScale:"pass" };
+
+function guardar(){
+  try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
+  catch(e){ console.warn("No se pudo guardar localmente", e); }
+}
+function cargar(){
+  try{
+    const raw = localStorage.getItem(STORE_KEY);
+    if(raw){ const p = JSON.parse(raw); if(p && Array.isArray(p.patients)){ state = p; return true; } }
+  }catch(e){ console.warn("No se pudo leer el almacenamiento local", e); }
+  return false;
+}
+
+/* ============================================================
+   CÁLCULO E INTERPRETACIÓN
+   ============================================================ */
+function totalEscala(key, reg){
+  if(!reg || reg.noEval) return null;
+  const S = SCALES[key];
+  /* puntaje ingresado directamente desde la calculadora rápida */
+  if(reg.totalDirecto !== undefined && reg.totalDirecto !== null && reg.totalDirecto !== ""){
+    const v = num(reg.totalDirecto);
+    return v === null ? null : +v.toFixed(S.decimales || (S.tipo === "tiempo" ? 1 : 0));
+  }
+  if(S.tipo === "tiempo"){ return num(reg.tiempo); }
+  const items = reg.items || {};
+  let suma = 0, contados = 0;
+  S.items.forEach(it => {
+    const v = items[it.id];
+    if(v !== undefined && v !== null && v !== ""){ suma += parseFloat(v); contados++; }
+  });
+  if(contados === 0) return null;
+  if(contados < S.items.length) return null;          // incompleta
+  return +( (S.base || 0) + suma ).toFixed(S.decimales || 0);
+}
+function completitud(key, reg){
+  const S = SCALES[key];
+  if(reg && reg.totalDirecto !== undefined && reg.totalDirecto !== null && reg.totalDirecto !== "")
+    return { hechos:1, total:1 };
+  if(S.tipo === "tiempo") return { hechos: num(reg && reg.tiempo)!==null ? 1:0, total:1 };
+  const items = (reg && reg.items) || {};
+  let n = 0;
+  S.items.forEach(it => { if(items[it.id] !== undefined && items[it.id] !== null && items[it.id] !== "") n++; });
+  return { hechos:n, total:S.items.length };
+}
+function interpretar(key, total){
+  if(total === null || total === undefined) return null;
+  const S = SCALES[key];
+  for(const b of S.bandas){ if(total <= b.max) return b; }
+  return S.bandas[S.bandas.length-1];
+}
+function fmtTotal(key, total){
+  if(total === null || total === undefined) return "—";
+  const S = SCALES[key];
+  if(S.tipo === "tiempo") return total.toFixed(1).replace(".", ",") + " s";
+  if(S.decimales) return total.toFixed(S.decimales).replace(".", ",");
+  return String(total);
+}
+function subtotalPASS(reg, rango){
+  const items = (reg && reg.items) || {};
+  let s = 0, n = 0;
+  SCALES.pass.items.slice(rango.desde, rango.hasta+1).forEach(it => {
+    const v = items[it.id];
+    if(v !== undefined && v !== null && v !== ""){ s += parseFloat(v); n++; }
+  });
+  return n ? s : null;
+}
+function interpretarNIHSS(v){
+  const n = num(v);
+  if(n === null) return null;
+  if(n === 0)  return {txt:"Sin déficit neurológico", tono:"ok"};
+  if(n <= 4)   return {txt:"ACV leve", tono:"ok"};
+  if(n <= 15)  return {txt:"ACV moderado", tono:"warn"};
+  if(n <= 20)  return {txt:"ACV moderado a severo", tono:"warn"};
+  return {txt:"ACV severo", tono:"crit"};
+}
+
+/* ---------- pacientes ---------- */
+function getPaciente(id){ return state.patients.find(p => p.id === id) || null; }
+function evalsOrdenadas(p){ return (p.evals || []).slice().sort((a,b) => a.fecha.localeCompare(b.fecha)); }
+function ultimaEval(p){ const e = evalsOrdenadas(p); return e.length ? e[e.length-1] : null; }
+function serie(p, key){
+  return evalsOrdenadas(p)
+    .map(ev => ({ fecha:ev.fecha, tipo:ev.tipo, valor: totalEscala(key, (ev.scales||{})[key]) }))
+    .filter(d => d.valor !== null);
+}
+function estadoControl(p){
+  const u = ultimaEval(p);
+  if(!u) return { tono:"", txt:"Sin evaluaciones", dias:null };
+  const d = diasEntre(u.fecha, hoy());
+  if(d === null) return { tono:"", txt:"—", dias:null };
+  if(d >= 7) return { tono:"due", txt:`Control pendiente · ${d} días`, dias:d };
+  return { tono:"ok", txt: d === 0 ? "Evaluado hoy" : `Hace ${d} ${d===1?"día":"días"}`, dias:d };
+}
+
+/* ============================================================
+   NAVEGACIÓN
+   ============================================================ */
+function irA(view, pid){
+  ui.view = view;
+  if(pid !== undefined) ui.pid = pid;
+  document.querySelectorAll(".nav button").forEach(b =>
+    b.setAttribute("aria-selected", String(b.dataset.view === view)));
+  ["pacientes","paciente","evaluacion","calculadora","referencia","datos"].forEach(v =>
+    $("#view-" + v).hidden = (v !== view));
+  if(view === "pacientes")  renderCamas();
+  if(view === "paciente")   renderFicha();
+  if(view === "evaluacion") renderEvaluacion();
+  if(view === "calculadora") renderCalculadora();
+  if(view === "referencia") renderReferencia();
+  if(view === "datos")      renderDatos();
+  window.scrollTo({top:0, behavior:"instant"});
+}
+
+/* ============================================================
+   VISTA · CAMAS
+   ============================================================ */
+function renderCamas(){
+  const cont = $("#bedGrid");
+  cont.innerHTML = "";
+  $("#demoBanner").hidden = !state.demo;
+  const avisoResp = $("#avisoRespaldo");
+  if(avisoResp) avisoResp.innerHTML = bannerRespaldo();
+
+  const usadas = new Set();
+  CAMAS.forEach(cama => {
+    const p = state.patients.find(x => x.cama === cama);
+    if(p){ usadas.add(p.id); cont.appendChild(tarjetaPaciente(p)); }
+    else {
+      const b = el("button", {className:"pcard empty-bed"});
+      b.innerHTML = `<div class="pcard-top"><span class="bed">${esc(cama)}</span></div>
+        <div class="muted small">Cama disponible — toca para ingresar un paciente</div>`;
+      b.onclick = () => nuevoPaciente(cama);
+      cont.appendChild(b);
+    }
+  });
+  state.patients.filter(p => !usadas.has(p.id)).forEach(p => cont.appendChild(tarjetaPaciente(p)));
+
+  /* resumen del servicio */
+  const box = $("#resumenServicio");
+  const n = state.patients.length;
+  const pend = state.patients.filter(p => estadoControl(p).tono === "due").length;
+  const conAlerta = state.patients.filter(p => {
+    const u = ultimaEval(p);
+    return u && evaluarVitales(u.vitals, p).some(a => a.tono === "crit");
+  }).length;
+  box.innerHTML = `
+    <p class="eyebrow">Resumen del turno</p>
+    <div class="kpis" style="margin-top:10px">
+      <div class="kpi"><div class="k-label">Pacientes</div><div class="k-val">${n}<small> / ${CAMAS.length} camas</small></div></div>
+      <div class="kpi"><div class="k-label">Controles pendientes</div><div class="k-val" style="color:${pend?'var(--accent)':'inherit'}">${pend}</div></div>
+      <div class="kpi"><div class="k-label">Alerta de signos vitales</div><div class="k-val" style="color:${conAlerta?'var(--crit)':'inherit'}">${conAlerta}</div></div>
+      <div class="kpi"><div class="k-label">Evaluaciones registradas</div><div class="k-val">${state.patients.reduce((a,p)=>a+(p.evals||[]).length,0)}</div></div>
+    </div>
+    <p class="footnote" style="margin:12px 0 0">Las escalas se aplican al ingreso y luego cada 7 días. La alerta de signos vitales usa criterios orientativos de seguridad para movilización precoz; la decisión clínica siempre es del equipo tratante.</p>`;
+}
+
+function tarjetaPaciente(p){
+  const est = estadoControl(p);
+  const u = ultimaEval(p);
+  const b = el("button", {className:"pcard " + (est.tono || "")});
+  const minis = ESCALAS_PRINCIPALES.map(k => {
+    const t = u ? totalEscala(k, (u.scales||{})[k]) : null;
+    return `<span class="mini">${SCALES[k].sigla}<b>${fmtTotal(k,t)}</b></span>`;
+  }).join("");
+  const alertas = u ? evaluarVitales(u.vitals, p) : [];
+  const critica = alertas.some(a => a.tono === "crit");
+  b.innerHTML = `
+    <div class="pcard-top">
+      <span class="bed">${esc(p.cama || "s/cama")}</span>
+      <span class="pname">${esc(p.iniciales || "—")}</span>
+      <span style="margin-left:auto; display:flex; gap:5px; flex-wrap:wrap; justify-content:flex-end">
+        ${pillEspera(p)}
+        ${pillReperfusion(p)}
+        ${critica ? '<span class="pill crit">Signos vitales</span>' : ""}
+      </span>
+    </div>
+    <div class="small muted">${esc(p.tipoACV || "Tipo de ACV por precisar")}${p.ladoAfectado ? " · hemiparesia " + esc(p.ladoAfectado.toLowerCase()) : ""}</div>
+    <div class="mini-scores">${minis}</div>
+    <div class="row" style="gap:6px">
+      ${u ? (() => { const r = calcularCarga(u);
+              return `<span class="pill ${r.cat.tono}" title="Carga de rehabilitación">${r.cat.corto} carga · ${r.total}</span>`; })() : ""}
+      <span class="pill ${est.tono==='due'?'accent':(est.tono==='ok'?'ok':'')}">${esc(est.txt)}</span>
+      <span class="small muted">${(p.evals||[]).length} eval.</span>
+    </div>`;
+  b.onclick = () => irA("paciente", p.id);
+  return b;
+}
+
+/* ============================================================
+   ALTA / EDICIÓN DE PACIENTE
+   ============================================================ */
+function nuevoPaciente(camaSugerida){
+  const p = {
+    id: uid(), iniciales:"", cama: camaSugerida || "", edad:"", sexo:"",
+    fechaIngreso: hoy(), tipoACV:"", subtipo:"", ladoAfectado:"",
+    nihss:"", nihssFecha:"", antecedentes:"", kine:"", evals:[]
+  };
+  state.patients.push(p); guardar();
+  irA("paciente", p.id);
+  setTimeout(() => { const i = $("#f-iniciales"); if(i) i.focus(); }, 60);
+}
+
+/* ============================================================
+   VISTA · FICHA DEL PACIENTE
+   ============================================================ */
+function renderFicha(){
+  const v = $("#view-paciente");
+  const p = getPaciente(ui.pid) || state.patients[0];
+  if(!p){
+    v.innerHTML = `<div class="card card-pad"><h2>Sin pacientes</h2>
+      <p class="muted small" style="margin:6px 0 12px">Ingresa un paciente desde la vista de camas para comenzar el seguimiento.</p>
+      <button class="btn" onclick="nuevoPaciente()">+ Ingresar paciente</button></div>`;
+    return;
+  }
+  ui.pid = p.id;
+  const evs = evalsOrdenadas(p).slice().reverse();
+  const u = evs[0] || null;
+  const prev = evs[1] || null;
+  const est = estadoControl(p);
+  const nih = interpretarNIHSS(p.nihss);
+
+  v.innerHTML = `
+    <div class="row">
+      <div>
+        <p class="eyebrow">Ficha de seguimiento</p>
+        <h1 style="font-size:26px">${esc(p.iniciales || "Paciente sin iniciales")} <span class="bed" style="font-size:13px; vertical-align:middle">${esc(p.cama || "s/cama")}</span></h1>
+        <p class="small muted" style="margin:4px 0 6px">
+          Ingreso ${fFecha(p.fechaIngreso)}${p.fechaIngreso ? ` · día ${diasEntre(p.fechaIngreso, hoy())} de hospitalización` : ""}
+        </p>
+        <span class="lado-badge ${p.ladoAfectado && p.ladoAfectado !== "Sin compromiso motor" ? "" : "neutro"}">
+          ${p.ladoAfectado && p.ladoAfectado !== "Sin compromiso motor"
+            ? (p.ladoAfectado === "Bilateral" ? "Compromiso bilateral" : "Hemicuerpo " + p.ladoAfectado.toLowerCase() + " afectado")
+            : "Hemicuerpo afectado sin definir"}
+        </span>
+      </div>
+      <span class="spacer"></span>
+      <button class="btn no-print" id="btnNuevaEval">+ Nueva evaluación</button>
+      <button class="btn ghost no-print" id="btnResumen">Resumen para ficha</button>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h2>Datos del paciente</h2><span class="spacer"></span><span class="pill ${est.tono==='due'?'accent':(est.tono==='ok'?'ok':'')}">${esc(est.txt)}</span></div>
+      <div class="card-pad grid-2" id="fichaDatos">
+        <label class="field">Iniciales<input id="f-iniciales" maxlength="6" placeholder="J.P.M." value="${esc(p.iniciales)}"></label>
+        <label class="field">Cama
+          <select id="f-cama">
+            <option value="">— sin asignar —</option>
+            ${CAMAS.map(c => `<option${c===p.cama?" selected":""}>${c}</option>`).join("")}
+            ${p.cama && !CAMAS.includes(p.cama) ? `<option selected>${esc(p.cama)}</option>` : ""}
+          </select></label>
+        <label class="field">Edad<input id="f-edad" type="number" min="0" max="120" inputmode="numeric" value="${esc(p.edad)}"></label>
+        <label class="field">Sexo
+          <select id="f-sexo">${["","Femenino","Masculino","Otro"].map(s=>`<option${s===p.sexo?" selected":""}>${s}</option>`).join("")}</select></label>
+        <label class="field">Fecha de ingreso<input id="f-fechaIngreso" type="date" value="${esc(p.fechaIngreso)}"></label>
+        <label class="field">Tipo de ACV
+          <select id="f-tipoACV"><option value=""></option>${TIPOS_ACV.map(t=>`<option${t===p.tipoACV?" selected":""}>${t}</option>`).join("")}</select></label>
+        <label class="field">Clasificación (Bamford)
+          <select id="f-subtipo"><option value=""></option>${SUBTIPOS.map(t=>`<option${t===p.subtipo?" selected":""}>${t}</option>`).join("")}</select></label>
+        <label class="field">Hemicuerpo afectado
+          <select id="f-ladoAfectado">${["","Derecho","Izquierdo","Bilateral","Sin compromiso motor"].map(s=>`<option${s===p.ladoAfectado?" selected":""}>${s}</option>`).join("")}</select></label>
+        <label class="field">NIHSS al ingreso <span class="muted" style="font-weight:400">(desde la ficha clínica)</span>
+          <input id="f-nihss" type="number" min="0" max="42" inputmode="numeric" value="${esc(p.nihss)}"></label>
+        <label class="field">Fecha del NIHSS<input id="f-nihssFecha" type="date" value="${esc(p.nihssFecha)}"></label>
+        <label class="field" style="grid-column:1/-1">Antecedentes y observaciones<textarea id="f-antecedentes" placeholder="Comorbilidades, precauciones, oxigenoterapia, dispositivos...">${esc(p.antecedentes)}</textarea></label>
+        <label class="field">Kinesiólogo/a a cargo<input id="f-kine" value="${esc(p.kine)}"></label>
+      </div>
+      ${nih ? `<div class="card-pad" style="padding-top:0"><span class="pill ${nih.tono}">NIHSS ${esc(p.nihss)} · ${esc(nih.txt)}</span></div>` : ""}
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h2>Terapia de reperfusión</h2><span class="spacer"></span>
+        <span class="small muted">trombólisis · trombectomía</span></div>
+      <div class="card-pad">
+        <div class="grid-2" style="margin-bottom:${p.reperfusion ? "16px" : "0"}">
+          <label class="field">¿Recibió terapia de reperfusión?
+            <select id="f-reperfusion">
+              ${REPERFUSION.map(t => `<option value="${esc(t)}"${t === (p.reperfusion||"") ? " selected" : ""}>${t || "— por definir —"}</option>`).join("")}
+            </select></label>
+          <label class="field">Inicio de síntomas <span class="muted" style="font-weight:400">o última vez visto sano</span>
+            <input id="f-inicioFecha" type="date" value="${esc(p.inicioFecha||"")}"></label>
+          <label class="field">Hora de inicio<input id="f-inicioHora" type="time" value="${esc(p.inicioHora||"")}"></label>
+          ${conTrombolisis(p.reperfusion) ? `
+            <label class="field">Fecha de la trombólisis<input id="f-tlFecha" type="date" value="${esc(p.tlFecha||"")}"></label>
+            <label class="field">Hora de la trombólisis<input id="f-tlHora" type="time" value="${esc(p.tlHora||"")}"></label>` : ""}
+          ${conTrombectomia(p.reperfusion) ? `
+            <label class="field">Fecha de la trombectomía<input id="f-tmFecha" type="date" value="${esc(p.tmFecha||"")}"></label>
+            <label class="field">Hora de la trombectomía<input id="f-tmHora" type="time" value="${esc(p.tmHora||"")}"></label>` : ""}
+        </div>
+        ${tarjetaReperfusion(p)}
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h2>Criterios de movilización</h2><span class="spacer"></span>
+        <span class="small muted">protocolo UTAC · según este paciente</span></div>
+      <div class="card-pad">${tarjetaCriterios(p, false)}</div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h2>Última evaluación</h2>
+        <span class="spacer"></span>
+        <span class="small muted">${u ? fFecha(u.fecha) + " · " + esc(u.tipo) : "sin registros"}</span></div>
+      <div class="card-pad" id="kpiWrap"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h2>Carga de rehabilitación</h2><span class="spacer"></span>
+        <span class="small muted">protocolo UTAC · ${u ? fFecha(u.fecha) : "sin registro"}</span></div>
+      <div class="card-pad">
+        ${u ? cargaHTML(calcularCarga(u), false) + historialCarga(p)
+            : '<p class="muted small">Se calcula automáticamente al registrar la primera evaluación.</p>'}
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h2>Esquema corporal</h2><span class="spacer"></span>
+        <span class="small muted">fuerza MRC por segmento · ${u ? fFecha(u.fecha) : "sin registro"}</span></div>
+      <div class="card-pad">${mapaCorporal(p, u)}</div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h2>Evolución</h2><span class="spacer"></span>
+        <select id="selChart" style="border:1px solid var(--line-2); background:var(--surface-2); border-radius:8px; padding:6px 9px; font-size:13px">
+          ${ESCALAS_ORDEN.map(k => `<option value="${k}"${k===ui.chartScale?" selected":""}>${SCALES[k].sigla} — ${SCALES[k].nombre}</option>`).join("")}
+        </select></div>
+      <div class="card-pad chart-wrap" id="chartWrap"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h2>Historial de evaluaciones</h2></div>
+      <div class="scroll-x" id="histWrap"></div>
+    </div>
+
+    <div class="card card-pad no-print">
+      <div class="row">
+        <span class="small muted">Este paciente se guarda solo en este dispositivo.</span>
+        <span class="spacer"></span>
+        <button class="btn danger sm" id="btnEliminarPaciente">Eliminar paciente</button>
+      </div>
+    </div>`;
+
+  /* enlaces de datos */
+  ["iniciales","cama","edad","sexo","fechaIngreso","tipoACV","subtipo","ladoAfectado","nihss","nihssFecha","antecedentes","kine",
+   "reperfusion","inicioFecha","inicioHora","tlFecha","tlHora","tmFecha","tmHora"]
+    .forEach(campo => {
+      const node = $("#f-" + campo);
+      if(!node) return;
+      node.addEventListener("change", () => {
+        p[campo] = node.value;
+        guardar();
+        if(["iniciales","cama","nihss","ladoAfectado","reperfusion",
+            "inicioFecha","inicioHora","tlFecha","tlHora","tmFecha","tmHora"].includes(campo)) renderFicha();
+      });
+    });
+
+  $("#btnNuevaEval").onclick = () => { ui.draft = null; irA("evaluacion", p.id); };
+  $("#btnResumen").onclick   = () => mostrarResumen(p);
+  $("#btnEliminarPaciente").onclick = () => {
+    if(confirm(`¿Eliminar a ${p.iniciales || "este paciente"} y sus ${(p.evals||[]).length} evaluaciones? Esta acción no se puede deshacer.`)){
+      state.patients = state.patients.filter(x => x.id !== p.id);
+      guardar(); irA("pacientes");
+    }
+  };
+  $("#selChart").onchange = (e) => { ui.chartScale = e.target.value; pintarGrafico(p); };
+
+  pintarKPIs(p, u, prev);
+  pintarGrafico(p);
+  pintarHistorial(p);
+}
+
+function pintarKPIs(p, u, prev){
+  const w = $("#kpiWrap");
+  if(!u){
+    w.innerHTML = `<p class="muted small">Aún no hay evaluaciones. Registra la <b>evaluación de ingreso</b> para iniciar el seguimiento.</p>`;
+    return;
+  }
+  const alertas = evaluarVitales(u.vitals, p);
+  const cards = ESCALAS_ORDEN.map(k => {
+    const reg = (u.scales||{})[k];
+    const t = totalEscala(k, reg);
+    const tp = prev ? totalEscala(k, (prev.scales||{})[k]) : null;
+    if(t === null && !reg) return "";
+    let delta = "";
+    if(t !== null && tp !== null){
+      const d = +(t - tp).toFixed(SCALES[k].decimales || 1);
+      const mejor = SCALES[k].mejor === "alto" ? d > 0 : d < 0;
+      const cls = d === 0 ? "flat" : (mejor ? "up" : "down");
+      delta = `<span class="delta ${cls}">${d > 0 ? "+" : ""}${String(d).replace(".",",")}</span>`;
+    }
+    const band = interpretar(k, t);
+    const S = SCALES[k];
+    const maxTxt = S.tipo === "tiempo" ? "" : ` <small>/ ${S.max}</small>`;
+    return `<div class="kpi">
+      <div class="k-label">${S.sigla}</div>
+      <div class="k-val"${band?` style="color:var(--${band.tono})"`:""}>${t===null ? "—" : fmtTotal(k,t).replace(" s","")}${t!==null?maxTxt:""} ${delta}</div>
+      ${band ? `<div class="small" style="color:var(--${band.tono}); font-weight:500; margin-top:3px; line-height:1.3">${esc(band.txt)}</div>` : `<div class="small muted" style="margin-top:3px">${reg && reg.noEval ? "No evaluada" : "Incompleta"}</div>`}
+    </div>`;
+  }).join("");
+
+  const crMov = criteriosMovilizacion(p);
+  const vit = VITALES.map(d => {
+    const val = num((u.vitals||{})[d.id]);
+    const est = estadoVital(d.id, val, crMov);
+    const tono = val===null ? "" : (est || "ok");
+    return `<div class="kpi" style="${tono?`border-color:var(--${tono})`:""}">
+      <div class="k-label">${d.label}</div>
+      <div class="k-val" style="font-size:20px; ${tono?`color:var(--${tono})`:""}">${val===null?"—":val}<small> ${d.unidad}</small></div>
+    </div>`;
+  }).join("");
+
+  w.innerHTML = `
+    <div class="kpis">${cards}</div>
+    <p class="eyebrow" style="margin:18px 0 8px">Signos vitales del control</p>
+    <div class="kpis">${vit}</div>
+    ${alertas.length ? alertas.map(a => `<div class="alert ${a.tono}" style="margin-top:10px"><b>${a.tono==="crit"?"Alerta":"Precaución"}:</b> ${esc(a.txt)}</div>`).join("") : ""}
+    ${u.notas ? `<p class="eyebrow" style="margin:18px 0 6px">Observaciones</p><p class="timeline-note">${esc(u.notas)}</p>` : ""}`;
+}
+</script>
+
+<style>
+.modal-bg{position:fixed; inset:0; background:rgba(8,22,20,.55); display:grid; place-items:center; padding:16px; z-index:90}
+.modal{background:var(--surface); border:1px solid var(--line); border-radius:var(--r); box-shadow:0 20px 50px rgba(0,0,0,.28); max-width:640px; width:100%; max-height:86vh; overflow:auto}
+.modal .card-head{position:sticky; top:0; background:var(--surface); z-index:2}
+</style>
+
+<script>
+"use strict";
+
+/* ============================================================
+   GRÁFICO DE EVOLUCIÓN
+   ============================================================ */
+function pintarGrafico(p){
+  const w = $("#chartWrap");
+  const key = ui.chartScale;
+  const S = SCALES[key];
+  const datos = serie(p, key);
+
+  if(datos.length === 0){
+    w.innerHTML = `<p class="muted small">Sin mediciones de ${S.sigla} registradas todavía.</p>`;
+    return;
+  }
+
+  const W = 720, H = 250, L = 46, R = 16, T = 18, B = 42;
+  const innerW = W - L - R, innerH = H - T - B;
+
+  let yMin, yMax;
+  if(S.tipo === "tiempo"){
+    const vals = datos.map(d => d.valor);
+    yMax = Math.max(30, Math.ceil(Math.max.apply(null, vals) / 10) * 10);
+    yMin = 0;
+  } else { yMin = S.min || 0; yMax = S.max; }
+
+  const n = datos.length;
+  const x = (i) => L + (n === 1 ? innerW / 2 : (innerW * i) / (n - 1));
+  const y = (v) => T + innerH - ((v - yMin) / (yMax - yMin)) * innerH;
+
+  const ticks = 4;
+  let grid = "", ejes = "";
+  for(let i = 0; i <= ticks; i++){
+    const v = yMin + ((yMax - yMin) * i) / ticks;
+    const yy = y(v);
+    grid += `<line x1="${L}" y1="${yy.toFixed(1)}" x2="${W-R}" y2="${yy.toFixed(1)}" stroke="var(--line)" stroke-width="1"/>`;
+    ejes += `<text x="${L-8}" y="${(yy+4).toFixed(1)}" text-anchor="end" fill="var(--ink-3)" font-size="11" font-family="IBM Plex Mono, monospace">${S.decimales ? v.toFixed(1).replace(".",",") : Math.round(v)}</text>`;
+  }
+
+  const linea = datos.map((d,i) => `${i?"L":"M"}${x(i).toFixed(1)},${y(d.valor).toFixed(1)}`).join(" ");
+  const area = `M${x(0).toFixed(1)},${(T+innerH).toFixed(1)} ` +
+    datos.map((d,i) => `L${x(i).toFixed(1)},${y(d.valor).toFixed(1)}`).join(" ") +
+    ` L${x(n-1).toFixed(1)},${(T+innerH).toFixed(1)} Z`;
+
+  const puntos = datos.map((d,i) => {
+    const ultimo = i === n - 1;
+    return `<circle cx="${x(i).toFixed(1)}" cy="${y(d.valor).toFixed(1)}" r="${ultimo?5.5:4}"
+      fill="${ultimo?"var(--primary)":"var(--surface)"}" stroke="var(--primary)" stroke-width="2"/>
+      <text x="${x(i).toFixed(1)}" y="${(y(d.valor)-12).toFixed(1)}" text-anchor="middle" fill="var(--ink)" font-size="11.5" font-weight="600" font-family="IBM Plex Mono, monospace">${fmtTotal(key,d.valor).replace(" s","")}</text>`;
+  }).join("");
+
+  const fechas = datos.map((d,i) =>
+    `<text x="${x(i).toFixed(1)}" y="${(T+innerH+18).toFixed(1)}" text-anchor="middle" fill="var(--ink-3)" font-size="10.5" font-family="IBM Plex Sans, sans-serif">${fFecha(d.fecha).slice(0,5)}</text>
+     <text x="${x(i).toFixed(1)}" y="${(T+innerH+31).toFixed(1)}" text-anchor="middle" fill="var(--ink-3)" font-size="9.5" font-family="IBM Plex Sans, sans-serif">${d.tipo === "Ingreso" ? "ingreso" : "control"}</text>`).join("");
+
+  const primero = datos[0].valor, ultimo = datos[n-1].valor;
+  const cambio = +(ultimo - primero).toFixed(S.decimales || 1);
+  const mejora = S.mejor === "alto" ? cambio > 0 : cambio < 0;
+  const relevante = key === "tug" ? Math.abs(cambio) >= 2.9 : true;
+
+  w.innerHTML = `
+    <svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Evolución de ${S.sigla}">
+      ${grid}${ejes}
+      <path d="${area}" fill="var(--primary)" opacity="0.08"/>
+      <path d="${linea}" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+      ${puntos}${fechas}
+    </svg>
+    <div class="row" style="margin-top:6px">
+      <span class="pill ${n>1 ? (cambio===0 ? "" : (mejora?"ok":"crit")) : ""}">
+        ${n>1 ? `${cambio>0?"+":""}${String(cambio).replace(".",",")} desde el ingreso` : "Primera medición"}
+      </span>
+      <span class="small muted">${esc(S.nombre)}${S.tipo!=="tiempo" ? ` · escala 0–${S.max}` : " · segundos"}</span>
+      ${key==="tug" && n>1 && !relevante ? `<span class="pill warn">Cambio menor al MDC (2,9 s)</span>` : ""}
+    </div>
+    <p class="footnote" style="margin:10px 0 0">${esc(S.nota)}</p>`;
+}
+
+/* ============================================================
+   HISTORIAL
+   ============================================================ */
+function pintarHistorial(p){
+  const w = $("#histWrap");
+  const evs = evalsOrdenadas(p).slice().reverse();
+  if(!evs.length){ w.innerHTML = `<p class="muted small" style="padding:16px">Sin evaluaciones registradas.</p>`; return; }
+  const filas = evs.map(ev => {
+    const v = ev.vitals || {};
+    const cols = ESCALAS_ORDEN.map(k => {
+      const reg = (ev.scales||{})[k];
+      const t = totalEscala(k, reg);
+      return `<td class="num">${t===null ? `<span class="muted">${reg&&reg.noEval?"n/e":"—"}</span>` : fmtTotal(k,t).replace(" s","")}</td>`;
+    }).join("");
+    return `<tr>
+      <td><b>${fFecha(ev.fecha)}</b><br><span class="small muted">${esc(ev.tipo)}</span>
+        ${ev.modo === "rapido" ? '<br><span class="pill" style="margin-top:3px">puntajes directos</span>' : ""}</td>
+      ${cols}
+      <td class="num small">${v.pas||"—"}/${v.pad||"—"}</td>
+      <td class="num small">${v.fc||"—"}</td>
+      <td class="num small">${v.spo2||"—"}</td>
+      <td class="num small">${v.fr||"—"}</td>
+      <td>${(() => { const r = calcularCarga(ev);
+            return `<span class="pill ${r.cat.tono}">${r.cat.corto} · ${r.total}</span>`; })()}</td>
+      <td class="no-print"><button class="btn ghost sm" data-edit="${ev.id}">Abrir</button></td>
+    </tr>`;
+  }).join("");
+  w.innerHTML = `<table>
+    <thead><tr><th>Fecha</th>${ESCALAS_ORDEN.map(k=>`<th>${SCALES[k].sigla}</th>`).join("")}
+    <th>PA</th><th>FC</th><th>SpO₂</th><th>FR</th><th>Carga</th><th class="no-print"></th></tr></thead>
+    <tbody>${filas}</tbody></table>`;
+  w.querySelectorAll("[data-edit]").forEach(b => {
+    b.onclick = () => {
+      const ev = (p.evals||[]).find(e => e.id === b.dataset.edit);
+      ui.draft = JSON.parse(JSON.stringify(ev));
+      irA("evaluacion", p.id);
+    };
+  });
+}
+
+/* ============================================================
+   VISTA · EVALUACIÓN
+   ============================================================ */
+function nuevoDraft(p){
+  const u = ultimaEval(p);
+  return {
+    id: uid(),
+    fecha: hoy(),
+    tipo: (p.evals||[]).length === 0 ? "Ingreso" : "Control 7 días",
+    vitals:{pas:"",pad:"",fc:"",spo2:"",fr:""},
+    scales:{},
+    notas:"",
+    evaluador: p.kine || "",
+    _nuevo: true,
+    _sugerida: u ? diasEntre(u.fecha, hoy()) : null
+  };
+}
+
+function renderEvaluacion(){
+  const v = $("#view-evaluacion");
+  const p = getPaciente(ui.pid);
+  if(!p){
+    v.innerHTML = `<div class="card card-pad"><h2>Selecciona un paciente</h2>
+      <p class="muted small" style="margin-top:6px">Abre una cama para registrar su evaluación.</p></div>`;
+    return;
+  }
+  if(!ui.draft) ui.draft = nuevoDraft(p);
+  const d = ui.draft;
+
+  v.innerHTML = `
+    <div class="row">
+      <div>
+        <p class="eyebrow">${d._nuevo ? "Nueva evaluación" : "Editando evaluación"}</p>
+        <h1 style="font-size:24px">${esc(p.iniciales || "Paciente")} · ${esc(p.cama || "s/cama")}</h1>
+      </div>
+      <span class="spacer"></span>
+      <button class="btn ghost no-print" id="btnCancelarEval">Cancelar</button>
+      <button class="btn no-print" id="btnGuardarEval">Guardar evaluación</button>
+    </div>
+
+    <div class="card card-pad">
+      <div class="grid-2">
+        <label class="field">Fecha de la evaluación<input id="e-fecha" type="date" value="${esc(d.fecha)}"></label>
+        <label class="field">Momento
+          <select id="e-tipo">${["Ingreso","Control 7 días","Control extraordinario","Egreso / traslado"].map(t=>`<option${t===d.tipo?" selected":""}>${t}</option>`).join("")}</select></label>
+        <label class="field">Evaluador/a<input id="e-evaluador" value="${esc(d.evaluador||"")}"></label>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h2>Signos vitales</h2><span class="spacer"></span><span class="small muted">previo a la movilización</span></div>
+      <div class="card-pad">
+        <div style="margin-bottom:14px">${tarjetaCriterios(p, true)}</div>
+        <div class="vit-grid">
+          <label class="field">PAS <span class="muted" style="font-weight:400">mmHg</span><input id="v-pas" type="number" inputmode="numeric" value="${esc(d.vitals.pas)}"></label>
+          <label class="field">PAD <span class="muted" style="font-weight:400">mmHg</span><input id="v-pad" type="number" inputmode="numeric" value="${esc(d.vitals.pad)}"></label>
+          <label class="field">FC <span class="muted" style="font-weight:400">lpm</span><input id="v-fc" type="number" inputmode="numeric" value="${esc(d.vitals.fc)}"></label>
+          <label class="field">SpO₂ <span class="muted" style="font-weight:400">%</span><input id="v-spo2" type="number" inputmode="numeric" value="${esc(d.vitals.spo2)}"></label>
+          <label class="field">FR <span class="muted" style="font-weight:400">rpm</span><input id="v-fr" type="number" inputmode="numeric" value="${esc(d.vitals.fr)}"></label>
+        </div>
+        <div id="vitAlertas" style="display:grid; gap:8px; margin-top:12px"></div>
+      </div>
+    </div>
+
+    <div>
+      <p class="eyebrow" style="margin-bottom:4px">Escalas principales · se aplican en cada control</p>
+      <p class="acc-pista">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11.5a3 3 0 1 1 4.2 2.75c-.7.33-1.2 1-1.2 1.78V17"/><circle cx="12" cy="20.5" r=".8" fill="var(--primary)"/><circle cx="12" cy="12" r="10"/></svg>
+        Toca cada escala para abrir su cuestionario. Se cierran solas para que veas todo de un vistazo.
+      </p>
+      <div id="escalasPrincipales"></div>
+    </div>
+
+    <div>
+      <p class="eyebrow" style="margin-bottom:6px">Escalas complementarias · opcionales</p>
+      <div id="escalasExtra"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h2>Carga de rehabilitación</h2><span class="spacer"></span>
+        <span class="small muted">se calcula sola con las 4 escalas principales</span></div>
+      <div class="card-pad" id="cargaLive"></div>
+    </div>
+
+    <div class="card card-pad">
+      <label class="field">Observaciones de la sesión
+        <textarea id="e-notas" placeholder="Tolerancia, ayuda técnica, incidentes, objetivos para la semana...">${esc(d.notas||"")}</textarea></label>
+    </div>
+
+    <div class="row no-print">
+      <button class="btn" id="btnGuardarEval2">Guardar evaluación</button>
+      ${!d._nuevo ? `<button class="btn danger" id="btnBorrarEval">Eliminar esta evaluación</button>` : ""}
+      <span class="spacer"></span>
+      <span class="small muted">Se guarda en este dispositivo.</span>
+    </div>`;
+
+  /* cabecera */
+  $("#e-fecha").onchange = e => { d.fecha = e.target.value; };
+  $("#e-tipo").onchange  = e => { d.tipo = e.target.value; };
+  $("#e-evaluador").onchange = e => { d.evaluador = e.target.value; };
+  $("#e-notas").onchange = e => { d.notas = e.target.value; };
+
+  VITALES.forEach(def => {
+    const node = $("#v-" + def.id);
+    node.addEventListener("input", () => { d.vitals[def.id] = node.value; pintarAlertasVitales(); });
+  });
+  pintarAlertasVitales();
+
+  $("#escalasPrincipales").innerHTML = ESCALAS_PRINCIPALES.map(k => bloqueEscala(k, d)).join("");
+  $("#escalasExtra").innerHTML       = ESCALAS_EXTRA.map(k => bloqueEscala(k, d)).join("");
+  conectarEscalas(d);
+  pintarCargaLive(d);
+
+  const guardarEval = () => {
+    if(!d.fecha){ alert("Indica la fecha de la evaluación."); return; }
+    const copia = JSON.parse(JSON.stringify(d));
+    delete copia._nuevo; delete copia._sugerida;
+    p.evals = (p.evals || []).filter(e => e.id !== copia.id);
+    p.evals.push(copia);
+    if(!p.kine && copia.evaluador) p.kine = copia.evaluador;
+    guardar(); ui.draft = null; irA("paciente", p.id);
+  };
+  $("#btnGuardarEval").onclick = guardarEval;
+  $("#btnGuardarEval2").onclick = guardarEval;
+  $("#btnCancelarEval").onclick = () => { ui.draft = null; irA("paciente", p.id); };
+  const del = $("#btnBorrarEval");
+  if(del) del.onclick = () => {
+    if(confirm("¿Eliminar esta evaluación?")){
+      p.evals = (p.evals||[]).filter(e => e.id !== d.id);
+      guardar(); ui.draft = null; irA("paciente", p.id);
+    }
+  };
+}
+
+function pintarAlertasVitales(){
+  const cont = $("#vitAlertas");
+  if(!cont) return;
+  const alertas = evaluarVitales(ui.draft.vitals, getPaciente(ui.pid));
+  cont.innerHTML = alertas.length
+    ? alertas.map(a => `<div class="alert ${a.tono}"><b>${a.tono==="crit"?"Alerta":"Precaución"}:</b> ${esc(a.txt)}</div>`).join("")
+    : `<div class="alert info">Rangos dentro de los criterios orientativos de seguridad para movilización.</div>`;
+}
+</script>
+
+<script>
+"use strict";
+
+/* ============================================================
+   BLOQUES DE ESCALA DENTRO DE LA EVALUACIÓN
+   ============================================================ */
+function regDe(d, key){
+  if(!d.scales[key]) d.scales[key] = SCALES[key].tipo === "tiempo"
+    ? {tiempo:"", ayuda:"", asistencia:"", obs:"", noEval:false, motivo:""}
+    : {items:{}, noEval:false, motivo:""};
+  return d.scales[key];
+}
+
+function bloqueEscala(key, d){
+  const S = SCALES[key];
+  const reg = regDe(d, key);
+  const abierto = false;   /* todas parten plegadas: se abren al tocarlas */
+  return `<details class="acc" data-scale="${key}"${abierto ? " open" : ""}>
+    <summary class="acc-head">
+      <span class="acc-chev" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+      </span>
+      <span class="acc-txt">
+        <span class="acc-title">${S.sigla}</span>
+        <span class="acc-sub">${esc(S.desc)}</span>
+      </span>
+      <span class="acc-estado" data-score="${key}">Sin iniciar</span>
+    </summary>
+    <div class="acc-body">
+      <div class="noeval-row">
+        <input type="checkbox" id="ne-${key}" data-noeval="${key}"${reg.noEval?" checked":""}>
+        <label for="ne-${key}" style="cursor:pointer">No se aplica en este control</label>
+        <input type="text" data-motivo="${key}" placeholder="Motivo (opcional)" value="${esc(reg.motivo||"")}"
+          style="flex:1; min-width:140px; background:var(--surface-2); border:1px solid var(--line); border-radius:6px; padding:5px 8px; font-size:12.5px"${reg.noEval?"":" hidden"}>
+      </div>
+      <div data-body="${key}" class="${reg.noEval?"disabled-block":""}">
+        ${key === "mrc" ? `<div data-mapa style="margin:12px 0 4px"></div>` : ""}
+        ${S.tipo === "tiempo" ? bloqueTUG(reg) : bloqueItems(key, reg)}
+        <div class="scale-total" data-total="${key}"></div>
+        <p class="footnote" style="margin:10px 0 0"><b>Fuente:</b> ${esc(S.fuente)}</p>
+      </div>
+    </div>
+  </details>`;
+}
+
+function bloqueItems(key, reg){
+  const S = SCALES[key];
+  let html = "", grupoActual = null;
+  S.items.forEach((it, i) => {
+    if(it.grupo && it.grupo !== grupoActual){
+      grupoActual = it.grupo;
+      html += `<p class="eyebrow" style="margin:16px 0 2px; color:var(--primary)">${esc(it.grupo)}</p>`;
+    }
+    const inline = it.opts.length > 4 && it.opts.every(o => String(o[1]).length < 46);
+    html += `<div class="item">
+      <div class="item-q"><span class="n">${i+1}.</span><span>${esc(it.q)}</span></div>
+      <div class="opts${inline?" inline":""}">
+        ${it.opts.map(([val,txt]) => {
+          const sel = String(reg.items[it.id]) === String(val);
+          return `<label class="opt${sel?" sel":""}">
+            <input type="radio" name="${key}-${it.id}" value="${val}" data-item="${key}|${it.id}"${sel?" checked":""}>
+            <span class="sc">${String(val).replace(".",",")}</span>
+            <span>${esc(txt)}</span>
+          </label>`;
+        }).join("")}
+      </div>
+      ${key === "ops" && it.id === "cognicion" ? bloqueAMT(reg) : ""}
+    </div>`;
+  });
+  return html;
+}
+
+function bloqueAMT(reg){
+  const marcados = reg.amt || {};
+  const n = Object.values(marcados).filter(Boolean).length;
+  return `<details style="margin-top:8px">
+    <summary style="font-size:12.5px; font-weight:600; color:var(--primary); cursor:pointer">Aplicar el Test Mental Abreviado (10 preguntas) →</summary>
+    <div class="amt">
+      ${AMT.map((q,i) => `<label><input type="checkbox" data-amt="${i}"${marcados[i]?" checked":""}><span>${esc(q)}</span></label>`).join("")}
+      <p class="small" style="margin:6px 0 0"><b>Puntaje: <span data-amt-total>${n}</span>/10</b> <span class="muted">— al marcar se selecciona automáticamente la categoría cognitiva del OPS.</span></p>
+    </div>
+  </details>`;
+}
+
+function bloqueTUG(reg){
+  return `<div class="grid-2" style="margin-top:12px">
+    <label class="field">Tiempo <span class="muted" style="font-weight:400">segundos · coma o punto</span>
+      <input type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" data-tug="tiempo"
+        placeholder="22,4" value="${esc(reg.tiempo)}"></label>
+    <label class="field">Ayuda técnica
+      <select data-tug="ayuda">${["","Ninguna","Bastón","Bastón de 4 apoyos","Andador / burrito","Órtesis (AFO)","Otra"].map(o=>`<option${o===reg.ayuda?" selected":""}>${o}</option>`).join("")}</select></label>
+    <label class="field">Nivel de asistencia
+      <select data-tug="asistencia">${["","Independiente","Supervisión","Asistencia mínima","Asistencia moderada","No logra realizar la prueba"].map(o=>`<option${o===reg.asistencia?" selected":""}>${o}</option>`).join("")}</select></label>
+    <label class="field" style="grid-column:1/-1">Observaciones<input type="text" data-tug="obs" value="${esc(reg.obs||"")}" placeholder="Giro hacia el lado parético, desequilibrio al sentarse..."></label>
+  </div>
+  <details style="margin-top:10px">
+    <summary style="font-size:12.5px; font-weight:600; color:var(--primary); cursor:pointer">Protocolo estandarizado →</summary>
+    <ol class="ref-list" style="margin-top:8px">${SCALES.tug.protocolo.map(x=>`<li>${esc(x)}</li>`).join("")}</ol>
+  </details>`;
+}
+
+function actualizarEscala(key, d){
+  const S = SCALES[key];
+  const reg = regDe(d, key);
+  const total = totalEscala(key, reg);
+  const comp = completitud(key, reg);
+  const band = interpretar(key, total);
+
+  const score = document.querySelector(`[data-score="${key}"]`);
+  if(score){
+    let txt, tono;
+    if(reg.noEval){ txt = "No se aplica"; tono = ""; }
+    else if(total !== null){ txt = fmtTotal(key, total) + (S.tipo !== "tiempo" ? ` / ${S.max}` : ""); tono = band ? band.tono : ""; }
+    else if(comp.hechos === 0){ txt = "Sin iniciar"; tono = ""; }
+    else { txt = `${comp.hechos} de ${comp.total}`; tono = "curso"; }
+    score.textContent = txt;
+    score.className = "acc-estado" + (tono ? " " + tono : "");
+    score.style.color = "";
+  }
+
+  if(ESCALAS_PRINCIPALES.includes(key)) pintarCargaLive(d);
+
+  if(key === "mrc"){
+    const mapa = document.querySelector("[data-mapa]");
+    const pac = getPaciente(ui.pid);
+    if(mapa && pac) mapa.innerHTML = mapaCorporal(pac, {scales:{mrc:reg}});
+  }
+
+  const box = document.querySelector(`[data-total="${key}"]`);
+  if(box){
+    if(total === null){
+      box.innerHTML = `<span class="muted small">${S.tipo==="tiempo" ? "Ingresa el tiempo para calcular la interpretación." : `Faltan ${comp.total - comp.hechos} de ${comp.total} ítems para obtener el puntaje total.`}</span>`;
+    } else {
+      let extra = "";
+      if(key === "pass"){
+        const a = subtotalPASS(reg, S.subtotales[0]), b = subtotalPASS(reg, S.subtotales[1]);
+        extra = `<span class="pill">A · mantener ${a}/15</span><span class="pill">B · cambiar ${b}/21</span>`;
+      }
+      if(key === "ops") extra = `<span class="pill">1,6 base + ${(total-1.6).toFixed(1).replace(".",",")} de déficit</span>`;
+      if(key === "tug" && total > 14) extra = `<span class="pill crit">&gt; 14 s · riesgo de caídas en ACV</span>`;
+      box.innerHTML = `<span class="eyebrow">Total</span>
+        <span class="tv">${fmtTotal(key,total)}</span>
+        ${S.tipo!=="tiempo" ? `<span class="muted small">/ ${S.max}</span>` : ""}
+        <span class="pill ${band?band.tono:""}">${band?esc(band.txt):""}</span>
+        ${extra}`;
+    }
+  }
+}
+
+function conectarEscalas(d){
+  ["#escalasPrincipales","#escalasExtra"].forEach(sel => {
+    const root = $(sel);
+    if(!root) return;
+
+    root.addEventListener("change", (e) => {
+      const t = e.target;
+
+      if(t.dataset.item){
+        const [key, itemId] = t.dataset.item.split("|");
+        regDe(d, key).items[itemId] = t.value;
+        t.closest(".opts").querySelectorAll(".opt").forEach(o => o.classList.remove("sel"));
+        t.closest(".opt").classList.add("sel");
+        actualizarEscala(key, d);
+      }
+
+      if(t.dataset.tug !== undefined && t.dataset.tug !== ""){
+        regDe(d, "tug")[t.dataset.tug] = t.value;
+        actualizarEscala("tug", d);
+      }
+
+      if(t.dataset.noeval){
+        const key = t.dataset.noeval;
+        const reg = regDe(d, key);
+        reg.noEval = t.checked;
+        const body = root.querySelector(`[data-body="${key}"]`);
+        if(body) body.classList.toggle("disabled-block", t.checked);
+        const mot = root.querySelector(`[data-motivo="${key}"]`);
+        if(mot) mot.hidden = !t.checked;
+        actualizarEscala(key, d);
+      }
+
+      if(t.dataset.motivo) regDe(d, t.dataset.motivo).motivo = t.value;
+
+      if(t.dataset.amt !== undefined){
+        const reg = regDe(d, "ops");
+        reg.amt = reg.amt || {};
+        reg.amt[t.dataset.amt] = t.checked;
+        const n = Object.values(reg.amt).filter(Boolean).length;
+        const out = root.querySelector("[data-amt-total]");
+        if(out) out.textContent = n;
+        const valor = n === 10 ? "0" : (n >= 8 ? "0.4" : (n >= 5 ? "0.8" : "1.2"));
+        const radio = root.querySelector(`input[name="ops-cognicion"][value="${valor}"]`);
+        if(radio){
+          radio.checked = true;
+          reg.items.cognicion = valor;
+          radio.closest(".opts").querySelectorAll(".opt").forEach(o => o.classList.remove("sel"));
+          radio.closest(".opt").classList.add("sel");
+        }
+        actualizarEscala("ops", d);
+      }
+    });
+
+    root.addEventListener("input", (e) => {
+      if(e.target.dataset.tug === "tiempo"){
+        regDe(d, "tug").tiempo = e.target.value;
+        actualizarEscala("tug", d);
+      }
+    });
+  });
+  ESCALAS_ORDEN.forEach(k => actualizarEscala(k, d));
+}
+</script>
+
+<style>
+/* ---------- esquema corporal ---------- */
+.mapa-wrap{display:grid; gap:16px; grid-template-columns:minmax(200px,252px) 1fr; align-items:center}
+@media (max-width:620px){ .mapa-wrap{grid-template-columns:1fr} }
+.mapa-svg{width:100%; max-width:252px; height:auto; display:block; margin:0 auto}
+.lado-badge{
+  display:inline-flex; align-items:center; gap:8px; border-radius:100px;
+  padding:6px 14px; font-weight:700; font-size:13px; letter-spacing:.04em; text-transform:uppercase;
+  background:var(--crit-soft); color:var(--crit); border:1.5px solid var(--crit);
+}
+.lado-badge.neutro{background:var(--surface-3); color:var(--ink-3); border-color:var(--line-2)}
+.seg-list{display:grid; gap:8px}
+.seg-row{display:flex; align-items:center; gap:10px; padding:9px 11px; border-radius:var(--r-sm); background:var(--surface-2); border:1px solid var(--line)}
+.seg-dot{width:34px; height:30px; border-radius:15px; border-radius:50%; display:grid; place-items:center; color:#fff; font-family:var(--mono); font-weight:600; font-size:14px; flex:none}
+.seg-name{font-weight:600; font-size:13.5px}
+.seg-sub{font-size:11.5px; color:var(--ink-3)}
+.ramp{display:flex; gap:3px; align-items:center; font-size:11px; color:var(--ink-3)}
+.ramp i{width:17px; height:9px; border-radius:2px; display:inline-block}
+
+/* ---------- cronómetro ---------- */
+.fab{
+  position:fixed; right:16px; bottom:calc(16px + env(safe-area-inset-bottom,0px)); z-index:60;
+  width:56px; height:56px; border-radius:50%; border:0; background:var(--primary); color:#fff;
+  box-shadow:0 6px 20px rgba(156,39,176,.35); display:grid; place-items:center;
+}
+.fab:hover{background:var(--primary-2)}
+.fab svg{width:26px; height:26px}
+.chrono{
+  position:fixed; right:16px; bottom:calc(84px + env(safe-area-inset-bottom,0px)); z-index:61;
+  width:min(320px, calc(100vw - 32px)); background:var(--surface);
+  border:1px solid var(--line-2); border-radius:14px; box-shadow:0 18px 44px rgba(14,26,44,.22); overflow:hidden;
+}
+.chrono-head{display:flex; align-items:center; gap:8px; padding:10px 13px; border-bottom:1px solid var(--line); background:var(--surface-2)}
+.chrono-head b{font-family:var(--display); font-size:14px}
+.chrono-body{padding:14px 13px}
+.chrono-disp{
+  font-family:var(--mono); font-variant-numeric:tabular-nums; font-weight:600;
+  font-size:44px; line-height:1; text-align:center; letter-spacing:-.02em; color:var(--ink);
+}
+.chrono-disp.alarma{color:var(--crit)}
+.chrono-disp.corriendo{color:var(--primary)}
+.chrono-sub{text-align:center; font-size:11.5px; color:var(--ink-3); margin-top:4px; min-height:16px}
+.chrono-btns{display:flex; gap:7px; margin-top:12px}
+.chrono-btns .btn{flex:1; justify-content:center; padding:10px 8px}
+.chrono-pre{display:flex; gap:6px; margin-top:9px}
+.chrono-pre button{
+  flex:1; border:1px solid var(--line-2); background:var(--surface-2); color:var(--ink-2);
+  border-radius:7px; padding:7px 4px; font-size:12px; font-weight:600;
+}
+.chrono-pre button.on{background:var(--primary-soft); border-color:var(--primary); color:var(--primary)}
+.chrono-vueltas{margin-top:10px; max-height:88px; overflow:auto; font-family:var(--mono); font-size:12px; color:var(--ink-2); display:grid; gap:3px}
+@keyframes pulso{0%,100%{opacity:1}50%{opacity:.35}}
+.parpadea{animation:pulso .45s ease-in-out 6}
+</style>
+
+<script>
+"use strict";
+
+/* ============================================================
+   ESQUEMA CORPORAL — fuerza por segmento del hemicuerpo afectado
+   ============================================================ */
+const COLOR_MRC = ["#C0261C","#E0501F","#EF7D15","#D9A400","#2E9270","#0E8558"];
+const SIN_DATO  = "#C6D3E4";
+const SEGMENTOS = [
+  {id:"hombro", nombre:"Hombro",        sub:"Braquial proximal"},
+  {id:"codo",   nombre:"Codo",          sub:"Braquial medial"},
+  {id:"muneca", nombre:"Muñeca y mano", sub:"Braquial distal"},
+  {id:"crural", nombre:"Crural",        sub:"Extremidad inferior"}
+];
+function colorMRC(v){ return (v === null || v === undefined || v === "") ? SIN_DATO : COLOR_MRC[parseInt(v,10)] || SIN_DATO; }
+
+/* migración de los registros antiguos de 8 grupos a los 4 segmentos clínicos */
+function migrarMRC(){
+  let cambios = false;
+  state.patients.forEach(p => (p.evals||[]).forEach(ev => {
+    const reg = (ev.scales||{}).mrc;
+    if(!reg || !reg.items) return;
+    if(reg.items.m1 === undefined) return;
+    const it = reg.items;
+    const prom = (a,b) => {
+      const va = parseInt(it[a],10), vb = parseInt(it[b],10);
+      if(isNaN(va) && isNaN(vb)) return undefined;
+      if(isNaN(va)) return String(vb);
+      if(isNaN(vb)) return String(va);
+      return String(Math.round((va+vb)/2));
+    };
+    reg.items = {
+      hombro: it.m1, codo: prom("m2","m3"), muneca: prom("m4","m5"), crural: prom("m6","m7")
+    };
+    Object.keys(reg.items).forEach(k => { if(reg.items[k] === undefined) delete reg.items[k]; });
+    cambios = true;
+  }));
+  if(cambios) guardar();
+}
+
+function valoresMRC(evalObj){
+  const reg = evalObj && (evalObj.scales||{}).mrc;
+  const it = (reg && !reg.noEval && reg.items) || {};
+  const o = {};
+  SEGMENTOS.forEach(s => { o[s.id] = (it[s.id] === undefined || it[s.id] === "") ? null : parseInt(it[s.id],10); });
+  return o;
+}
+
+/* --- contorno anatómico: curva de Catmull-Rom sobre los puntos de anclaje --- */
+function suave(pts, tension){
+  const t = tension === undefined ? 0.5 : tension, n = pts.length;
+  const P = i => pts[(i % n + n) % n];
+  let d = `M${pts[0][0]},${pts[0][1]}`;
+  for(let i = 0; i < n; i++){
+    const p0 = P(i-1), p1 = P(i), p2 = P(i+1), p3 = P(i+2);
+    const c1x = p1[0] + (p2[0]-p0[0])*t/3, c1y = p1[1] + (p2[1]-p0[1])*t/3;
+    const c2x = p2[0] - (p3[0]-p1[0])*t/3, c2y = p2[1] - (p3[1]-p1[1])*t/3;
+    d += `C${c1x.toFixed(1)},${c1y.toFixed(1)} ${c2x.toFixed(1)},${c2y.toFixed(1)} ${p2[0]},${p2[1]}`;
+  }
+  return d + "Z";
+}
+
+/* mitad derecha del dibujo (desde el vértice del cráneo hasta el pubis) */
+const MEDIO = 170;
+const PERFIL = [
+  [170,19],[191,24],[203,44],[204,63],[197,83],[186,95],[181,107],
+  [196,117],[214,124],[232,134],[245,152],[250,177],
+  [252,215],[252,258],[251,300],[249,340],
+  [253,362],[254,386],[248,403],[240,406],[235,392],[234,360],
+  [236,318],[237,258],[236,215],[233,180],[230,167],
+  [221,181],[214,212],[209,250],[213,278],[220,300],[226,325],
+  [225,355],[221,390],[214,425],[207,456],[204,482],[202,510],
+  [197,545],[193,572],[195,590],[201,600],[193,608],[180,607],[174,597],[172,580],
+  [178,545],[183,508],[186,470],[185,430],[181,392],[177,366],[170,348]
+];
+const espejo  = ([x,y]) => [2*MEDIO - x, y];
+const CUERPO  = PERFIL.concat(PERFIL.slice(1,-1).reverse().map(espejo));
+const PATH_CUERPO = suave(CUERPO, 0.5);
+
+/* regiones de cada segmento (mitad derecha del dibujo; se recortan contra la silueta) */
+const REGIONES = {
+  hombro: [[204,110],[276,110],[276,264],[231,264],[233,172],[221,177],[209,148]],
+  codo:   [[228,264],[276,264],[276,352],[228,352]],
+  muneca: [[228,352],[276,352],[276,418],[228,418]],
+  crural: [[171,320],[244,320],[244,624],[171,624]]
+};
+const poli = (pts, invertir) =>
+  (invertir ? pts.map(espejo) : pts).map(q => q.join(",")).join(" ");
+
+function svgCuerpo(lado, val){
+  const izq = lado === "Izquierdo" || lado === "Bilateral";
+  const der = lado === "Derecho"   || lado === "Bilateral";
+  const BASE = "#E9EFF7", TRAZO = "#2C3E56";
+
+  /* relleno de cada segmento del lado afectado */
+  const pintar = (invertir) => SEGMENTOS.map(s => {
+    const v = val[s.id];
+    const relleno = v === null ? "url(#pendiente)" : colorMRC(v);
+    return `<polygon points="${poli(REGIONES[s.id], invertir)}" fill="${relleno}"/>`;
+  }).join("");
+
+  /* líneas que separan proximal / medial / distal y el segmento crural */
+  const cortes = (inv) => {
+    const L = (x1,y1,x2,y2) => {
+      const a = inv ? espejo([x1,y1]) : [x1,y1], b = inv ? espejo([x2,y2]) : [x2,y2];
+      return `<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="#fff" stroke-width="3" opacity=".9"/>`;
+    };
+    return L(226,264,276,260) + L(228,352,276,348) + L(171,322,246,316);
+  };
+
+  const marcador = (seg, y, destinoX, mx) => {
+    const v = val[seg], col = colorMRC(v);
+    const s = SEGMENTOS.find(z => z.id === seg);
+    return `
+      <line x1="${mx}" y1="${y}" x2="${destinoX}" y2="${y}" stroke="${col}" stroke-width="1.5" stroke-dasharray="3 4" opacity=".85"/>
+      <circle cx="${mx}" cy="${y}" r="17" fill="${v===null?"#FFFFFF":col}" stroke="${col}" stroke-width="2.5"/>
+      <text x="${mx}" y="${y+5}" text-anchor="middle" fill="${v===null?col:"#fff"}" font-size="15" font-weight="700"
+        font-family="IBM Plex Mono, monospace">M${v===null?"?":v}</text>
+      <text x="${mx}" y="${y+31}" text-anchor="middle" fill="var(--ink-2)" font-size="10" font-weight="600"
+        font-family="IBM Plex Sans, sans-serif">${s.nombre}</text>`;
+  };
+  const columna = (inv) => {
+    const mx = inv ? 46 : 294;
+    const dx = (x) => inv ? 2*MEDIO - x : x;
+    return marcador("hombro",178,dx(248),mx) + marcador("codo",300,dx(250),mx)
+         + marcador("muneca",386,dx(246),mx) + marcador("crural",472,dx(212),mx);
+  };
+
+  return `<svg class="mapa-svg" viewBox="0 0 340 625" role="img"
+      aria-label="Esquema corporal: hemicuerpo ${esc(lado||"no definido").toLowerCase()}, fuerza MRC por segmento">
+    <defs>
+      <clipPath id="recorteCuerpo"><path d="${PATH_CUERPO}"/></clipPath>
+      <pattern id="pendiente" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <rect width="8" height="8" fill="#F4F7FB"/><rect width="3" height="8" fill="#C6D3E4"/>
+      </pattern>
+    </defs>
+
+    <text x="84" y="15" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="1"
+      font-family="IBM Plex Sans, sans-serif" fill="${der?"var(--crit)":"var(--ink-3)"}">DERECHA</text>
+    <text x="256" y="15" text-anchor="middle" font-size="11" font-weight="700" letter-spacing="1"
+      font-family="IBM Plex Sans, sans-serif" fill="${izq?"var(--crit)":"var(--ink-3)"}">IZQUIERDA</text>
+
+    <path d="${PATH_CUERPO}" fill="${BASE}"/>
+    <g clip-path="url(#recorteCuerpo)">
+      ${der ? pintar(true)  + cortes(true)  : ""}
+      ${izq ? pintar(false) + cortes(false) : ""}
+    </g>
+    <path d="${PATH_CUERPO}" fill="none" stroke="${TRAZO}" stroke-width="2" stroke-linejoin="round"/>
+
+    ${der ? columna(true) : ""}
+    ${izq ? columna(false) : ""}
+  </svg>`;
+}
+
+function mapaCorporal(p, evalObj){
+  const val = valoresMRC(evalObj);
+  const lado = p.ladoAfectado || "";
+  const definido = lado && lado !== "Sin compromiso motor";
+  const filas = SEGMENTOS.map(s => {
+    const v = val[s.id];
+    return `<div class="seg-row">
+      <span class="seg-dot" style="background:${colorMRC(v)}">M${v===null?"?":v}</span>
+      <span><span class="seg-name">${s.nombre}</span><br><span class="seg-sub">${s.sub}</span></span>
+      <span class="spacer"></span>
+      <span class="num small muted">${v===null?"sin registro":"M"+v+" de M5"}</span>
+    </div>`;
+  }).join("");
+
+  return `<div class="mapa-wrap">
+    <div>
+      ${definido ? svgCuerpo(lado, val) : svgCuerpo("", val)}
+      <p class="footnote" style="text-align:center; margin:2px 0 0">Vista anterior · el paciente mira hacia ti</p>
+    </div>
+    <div style="display:grid; gap:12px">
+      <span class="lado-badge ${definido?"":"neutro"}">
+        ${definido ? (lado === "Bilateral" ? "Compromiso bilateral" : "Hemicuerpo " + lado.toLowerCase() + " afectado") : "Define el hemicuerpo afectado en la ficha"}
+      </span>
+      <div class="seg-list">${filas}</div>
+      <div class="ramp">
+        <span>M0</span>${COLOR_MRC.map(c => `<i style="background:${c}"></i>`).join("")}<span>M5</span>
+        <span style="margin-left:6px">sin contracción → fuerza normal</span>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ============================================================
+   CRONÓMETRO
+   ============================================================ */
+const Chrono = {
+  t0:0, acum:0, corriendo:false, modo:"up", objetivo:0, sonado:false, vueltas:[], raf:null,
+
+  abrir(){ $("#chronoPanel").hidden = false; $("#chronoFab").hidden = true; Chrono.pintar(); },
+  cerrar(){ $("#chronoPanel").hidden = true; $("#chronoFab").hidden = false; },
+
+  ms(){
+    const t = Chrono.acum + (Chrono.corriendo ? (performance.now() - Chrono.t0) : 0);
+    return Chrono.modo === "down" ? Math.max(0, Chrono.objetivo - t) : t;
+  },
+  fmt(ms){
+    const cs = Math.floor(ms / 10) % 100;
+    const s  = Math.floor(ms / 1000) % 60;
+    const m  = Math.floor(ms / 60000);
+    const dd = (x,n) => String(x).padStart(n,"0");
+    return (m > 0 ? dd(m,2) + ":" : "") + dd(s,2) + "," + dd(cs,2);
+  },
+  iniciar(){
+    if(Chrono.corriendo){
+      Chrono.acum += performance.now() - Chrono.t0; Chrono.corriendo = false;
+      soltarBloqueoPantalla();
+    } else {
+      Chrono.t0 = performance.now(); Chrono.corriendo = true; Chrono.bucle();
+      pedirBloqueoPantalla();
+    }
+    vibrar();
+    Chrono.pintar();
+  },
+  reiniciar(){ Chrono.acum = 0; Chrono.corriendo = false; Chrono.sonado = false; Chrono.vueltas = [];
+    soltarBloqueoPantalla(); Chrono.pintar(); },
+  preset(seg){
+    Chrono.modo = seg ? "down" : "up";
+    Chrono.objetivo = seg * 1000;
+    Chrono.reiniciar();
+  },
+  vuelta(){ Chrono.vueltas.unshift(Chrono.fmt(Chrono.ms())); Chrono.pintar(); },
+  bucle(){
+    if(!Chrono.corriendo) return;
+    Chrono.pintar();
+    Chrono.raf = requestAnimationFrame(Chrono.bucle);
+  },
+  alarma(){
+    if(Chrono.sonado) return;
+    Chrono.sonado = true;
+    try{ if(navigator.vibrate) navigator.vibrate([180,90,180]); }catch(e){}
+    try{
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      [0, 0.28].forEach(d => {
+        const o = ctx.createOscillator(), g = ctx.createGain();
+        o.frequency.value = 880; o.connect(g); g.connect(ctx.destination);
+        g.gain.setValueAtTime(0.0001, ctx.currentTime + d);
+        g.gain.exponentialRampToValueAtTime(0.25, ctx.currentTime + d + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + d + 0.2);
+        o.start(ctx.currentTime + d); o.stop(ctx.currentTime + d + 0.22);
+      });
+    }catch(e){}
+    const disp = $("#chronoDisp");
+    if(disp){ disp.classList.add("parpadea"); setTimeout(() => disp.classList.remove("parpadea"), 2800); }
+  },
+  pintar(){
+    const disp = $("#chronoDisp"); if(!disp) return;
+    const ms = Chrono.ms();
+    disp.textContent = Chrono.fmt(ms);
+    disp.classList.toggle("corriendo", Chrono.corriendo && !(Chrono.modo === "down" && ms === 0));
+    disp.classList.toggle("alarma", Chrono.modo === "down" && ms === 0);
+    if(Chrono.modo === "down" && ms === 0 && Chrono.corriendo){
+      Chrono.corriendo = false; soltarBloqueoPantalla(); Chrono.alarma(); }
+
+    $("#chronoPlay").textContent = Chrono.corriendo ? "Pausar" : "Iniciar";
+    $("#chronoSub").textContent = Chrono.modo === "down"
+      ? `Cuenta regresiva de ${Chrono.objetivo/1000} s`
+      : "Cronómetro libre — TUG";
+    document.querySelectorAll("#chronoPre button").forEach(b =>
+      b.classList.toggle("on", parseInt(b.dataset.seg,10) * 1000 === Chrono.objetivo && (Chrono.modo === "down") === (b.dataset.seg !== "0")));
+    const v = $("#chronoVueltas");
+    v.innerHTML = Chrono.vueltas.map((x,i) => `<div>${Chrono.vueltas.length-i}. ${x}</div>`).join("");
+    const envia = $("#chronoTug");
+    envia.hidden = !(ui.view === "evaluacion" && ui.draft && Chrono.modo === "up");
+  },
+  aTUG(){
+    if(!(ui.view === "evaluacion" && ui.draft)) return;
+    const seg = (Chrono.ms() / 1000).toFixed(1);
+    regDe(ui.draft, "tug").tiempo = seg;
+    const input = document.querySelector('[data-tug="tiempo"]');
+    if(input) input.value = seg;
+    const reg = regDe(ui.draft, "tug");
+    if(reg.noEval){
+      reg.noEval = false;
+      const chk = document.querySelector('[data-noeval="tug"]');
+      if(chk){ chk.checked = false; }
+      const body = document.querySelector('[data-body="tug"]');
+      if(body) body.classList.remove("disabled-block");
+    }
+    actualizarEscala("tug", ui.draft);
+    const det = document.querySelector('details[data-scale="tug"]');
+    if(det){ det.open = true; det.scrollIntoView({behavior:"smooth", block:"center"}); }
+    $("#chronoSub").textContent = `${seg.replace(".",",")} s enviados al TUG ✓`;
+  }
+};
+
+(function montarChrono(){
+  const fab = el("button", {className:"fab", id:"chronoFab", title:"Cronómetro"});
+  fab.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6M19 5l1.5 1.5"/></svg>`;
+  fab.onclick = Chrono.abrir;
+
+  const panel = el("div", {className:"chrono", id:"chronoPanel"});
+  panel.hidden = true;
+  panel.innerHTML = `
+    <div class="chrono-head">
+      <b>Cronómetro</b><span class="spacer"></span>
+      <button class="icon-btn" id="chronoClose" style="padding:4px 9px">Cerrar</button>
+    </div>
+    <div class="chrono-body">
+      <div class="chrono-disp" id="chronoDisp">00,00</div>
+      <div class="chrono-sub" id="chronoSub"></div>
+      <div class="chrono-btns">
+        <button class="btn" id="chronoPlay">Iniciar</button>
+        <button class="btn ghost" id="chronoLap">Vuelta</button>
+        <button class="btn ghost" id="chronoReset">Cero</button>
+      </div>
+      <div class="chrono-pre" id="chronoPre">
+        <button data-seg="0">TUG libre</button>
+        <button data-seg="10">10 s</button>
+        <button data-seg="30">30 s</button>
+        <button data-seg="60">60 s</button>
+      </div>
+      <button class="btn sm" id="chronoTug" style="width:100%; justify-content:center; margin-top:9px" hidden>Enviar tiempo al TUG</button>
+      <div class="chrono-vueltas" id="chronoVueltas"></div>
+    </div>`;
+  document.body.appendChild(fab);
+  document.body.appendChild(panel);
+
+  $("#chronoClose").onclick = Chrono.cerrar;
+  $("#chronoPlay").onclick  = Chrono.iniciar;
+  $("#chronoLap").onclick   = Chrono.vuelta;
+  $("#chronoReset").onclick = Chrono.reiniciar;
+  $("#chronoTug").onclick   = Chrono.aTUG;
+  panel.querySelectorAll("#chronoPre button").forEach(b =>
+    b.onclick = () => Chrono.preset(parseInt(b.dataset.seg,10)));
+  Chrono.preset(0);
+})();
+</script>
+
+<style>
+/* ---------- categorización de carga de rehabilitación ---------- */
+.carga-hero{display:flex; align-items:center; gap:14px; flex-wrap:wrap}
+.carga-sello{
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  min-width:128px; padding:12px 18px; border-radius:14px; border:2px solid;
+  line-height:1.1; text-align:center;
+}
+.carga-sello .cs-cat{font-family:var(--display); font-weight:700; font-size:19px; letter-spacing:-.01em}
+.carga-sello .cs-pts{font-family:var(--mono); font-size:12px; font-weight:600; opacity:.85; margin-top:3px}
+.carga-sello.ok{background:var(--ok-soft); border-color:var(--ok); color:var(--ok)}
+.carga-sello.warn{background:var(--warn-soft); border-color:var(--warn); color:var(--warn)}
+.carga-sello.crit{background:var(--crit-soft); border-color:var(--crit); color:var(--crit)}
+.carga-sello.pend{background:var(--surface-3); border-color:var(--line-2); color:var(--ink-3); border-style:dashed}
+
+.carga-barra{flex:1; min-width:220px}
+.cb-track{display:flex; gap:3px; height:12px; margin-bottom:6px}
+.cb-seg{border-radius:3px; height:100%}
+.cb-seg.s1{flex:1; background:var(--ok); opacity:.3}
+.cb-seg.s2{flex:4; background:var(--warn); opacity:.3}
+.cb-seg.s3{flex:4; background:var(--crit); opacity:.3}
+.cb-seg.on{opacity:1}
+.cb-esc{display:flex; justify-content:space-between; font-size:10.5px; color:var(--ink-3); font-family:var(--mono)}
+.carga-tabla td{padding:7px 9px; font-size:13px}
+.carga-pts{display:inline-grid; place-items:center; width:24px; height:24px; border-radius:6px; font-family:var(--mono); font-weight:700; font-size:13px; color:#fff}
+.carga-hist{display:flex; gap:6px; flex-wrap:wrap; align-items:center; font-size:11.5px}
+.carga-hist b{font-family:var(--mono)}
+</style>
+
+<script>
+"use strict";
+
+/* ============================================================
+   CATEGORIZACIÓN DE CARGA DE REHABILITACIÓN
+   Protocolo interno del equipo de kinesiología · servicio UTAC
+   Cada escala aporta 1, 2 o 3 puntos. Total 4 a 12.
+   ============================================================ */
+
+const TABLA_CARGA = [
+  {key:"pass", rangos:["25 a 36",   "13 a 24",   "0 a 12"]},
+  {key:"ops",  rangos:["1,6 a 3,2", "3,2 a 5,2", "5,2 a 6,8"]},
+  {key:"tct",  rangos:["67 a 100",  "34 a 66",   "0 a 33"]},
+  {key:"tug",  rangos:["0 a 8 s",   "9 a 15 s",  "16 s o más"]}
+];
+
+const CATEGORIAS_CARGA = [
+  {id:"baja",    nombre:"Baja carga",    corto:"Baja",    tono:"ok",   rango:"4 puntos",      max:4},
+  {id:"mediana", nombre:"Mediana carga", corto:"Mediana", tono:"warn", rango:"5 a 8 puntos",  max:8},
+  {id:"alta",    nombre:"Alta carga",    corto:"Alta",    tono:"crit", rango:"9 a 12 puntos", max:12}
+];
+
+/* Regla de borde: se lee la fila de izquierda a derecha y gana la primera columna
+   que contiene el valor (por eso OPS 3,2 → 1 punto y OPS 5,2 → 2 puntos).
+   Escala no aplicada o incompleta → 3 puntos, según acuerdo del servicio. */
+function puntosCarga(key, valor){
+  if(valor === null || valor === undefined) return 3;
+  const v = Number(valor);
+  if(!Number.isFinite(v)) return 3;
+  switch(key){
+    case "pass": return v >= 25  ? 1 : (v >= 13  ? 2 : 3);
+    case "tct":  return v >= 67  ? 1 : (v >= 34  ? 2 : 3);
+    case "ops":  return v <= 3.2 ? 1 : (v <= 5.2 ? 2 : 3);
+    case "tug":  return v <= 8   ? 1 : (v <= 15  ? 2 : 3);
+  }
+  return 3;
+}
+
+function calcularCarga(evalObj){
+  const detalle = ESCALAS_PRINCIPALES.map(k => {
+    const reg = ((evalObj && evalObj.scales) || {})[k];
+    const valor = totalEscala(k, reg);
+    const noAplica = !!(reg && reg.noEval);
+    return {
+      key:k, sigla:SCALES[k].sigla, valor:valor,
+      puntos: puntosCarga(k, valor),
+      noAplica: noAplica,
+      pendiente: valor === null && !noAplica
+    };
+  });
+  const total = detalle.reduce((a,d) => a + d.puntos, 0);
+  const cat = CATEGORIAS_CARGA.find(c => total <= c.max) || CATEGORIAS_CARGA[2];
+  return { total, cat, detalle, pendientes: detalle.filter(d => d.pendiente).length };
+}
+
+const COLOR_PTS = {1:"var(--ok)", 2:"var(--warn)", 3:"var(--crit)"};
+
+function cargaHTML(res, enVivo){
+  const provisional = res.pendientes > 0;
+  const filas = res.detalle.map(d => {
+    const S = SCALES[d.key];
+    let valorTxt;
+    if(d.valor !== null) valorTxt = fmtTotal(d.key, d.valor);
+    else if(d.noAplica)  valorTxt = '<span class="pill crit">no se aplica → 3 pts</span>';
+    else                 valorTxt = '<span class="muted">pendiente</span>';
+    return `<tr>
+      <td><b>${S.sigla}</b></td>
+      <td class="num">${valorTxt}</td>
+      <td style="text-align:right"><span class="carga-pts" style="background:${COLOR_PTS[d.puntos]}">${d.puntos}</span></td>
+    </tr>`;
+  }).join("");
+
+  const pos = Math.max(0, Math.min(1, (res.total - 4) / 8)) * 100;
+
+  return `
+    <div class="carga-hero">
+      <div class="carga-sello ${provisional ? "pend" : res.cat.tono}">
+        <span class="cs-cat">${provisional ? "Provisorio" : res.cat.nombre}</span>
+        <span class="cs-pts">${res.total} / 12 puntos</span>
+      </div>
+      <div class="carga-barra">
+        <div class="cb-track">
+          <span class="cb-seg s1 ${!provisional && res.cat.id==="baja"?"on":""}"></span>
+          <span class="cb-seg s2 ${!provisional && res.cat.id==="mediana"?"on":""}"></span>
+          <span class="cb-seg s3 ${!provisional && res.cat.id==="alta"?"on":""}"></span>
+        </div>
+        <div class="cb-esc"><span>4 · baja</span><span>5–8 · mediana</span><span>9–12 · alta</span></div>
+        <div style="margin-top:7px; font-size:12px; color:var(--ink-2)">
+          ${provisional
+            ? `Faltan <b>${res.pendientes}</b> escala(s) por completar o marcar como no aplicable. El puntaje mostrado ya les asigna 3 puntos.`
+            : `Posición en el rango: <b class="num">${res.total}</b> de 12 · ${esc(res.cat.rango)}`}
+        </div>
+      </div>
+    </div>
+    <div class="scroll-x" style="margin-top:14px">
+      <table class="carga-tabla">
+        <thead><tr><th>Escala</th><th>Valor</th><th style="text-align:right">Puntos</th></tr></thead>
+        <tbody>${filas}</tbody>
+        <tfoot><tr style="border-top:2px solid var(--line-2)">
+          <td colspan="2"><b>Total</b></td>
+          <td style="text-align:right"><b class="num" style="font-size:15px">${res.total}</b></td>
+        </tr></tfoot>
+      </table>
+    </div>
+    ${enVivo ? "" : `<p class="footnote" style="margin:10px 0 0">Protocolo interno del equipo de kinesiología de la UTAC. La categoría orienta la asignación de carga de rehabilitación; la indicación final es del equipo tratante.</p>`}`;
+}
+
+function historialCarga(p){
+  const evs = evalsOrdenadas(p);
+  if(evs.length < 2) return "";
+  const pasos = evs.map(ev => {
+    const r = calcularCarga(ev);
+    return `<span class="pill ${r.cat.tono}">${fFecha(ev.fecha).slice(0,5)} · ${r.cat.corto} <b>${r.total}</b></span>`;
+  }).join('<span class="muted">→</span>');
+  const prim = calcularCarga(evs[0]), ult = calcularCarga(evs[evs.length-1]);
+  const cambio = prim.cat.id !== ult.cat.id;
+  return `<div style="margin-top:14px">
+    <p class="eyebrow" style="margin-bottom:7px">Evolución de la categoría</p>
+    <div class="carga-hist">${pasos}</div>
+    ${cambio ? `<p class="small" style="margin:8px 0 0; color:var(--${ult.cat.tono}); font-weight:600">
+      Cambió de ${prim.cat.nombre.toLowerCase()} a ${ult.cat.nombre.toLowerCase()} desde el ingreso.</p>` : ""}
+  </div>`;
+}
+
+function pintarCargaLive(d){
+  const cont = document.getElementById("cargaLive");
+  if(cont) cont.innerHTML = cargaHTML(calcularCarga(d), true);
+}
+</script>
+
+<style>
+/* ---------- calculadora rápida ---------- */
+.calc-grid{display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.calc-campo{
+  border:1px solid var(--line); border-radius:var(--r); padding:12px 13px; background:var(--surface-2);
+  display:grid; gap:8px; align-content:start;
+}
+.calc-campo.lista{border-color:var(--primary); background:var(--primary-soft)}
+.calc-campo.error{border-color:var(--crit); background:var(--crit-soft)}
+.calc-top{display:flex; align-items:baseline; gap:8px}
+.calc-sigla{font-family:var(--display); font-weight:700; font-size:17px}
+.calc-nom{font-size:11px; color:var(--ink-3); font-weight:600; letter-spacing:.03em}
+.calc-pts{
+  margin-left:auto; display:grid; place-items:center; width:30px; height:30px; border-radius:8px;
+  font-family:var(--mono); font-weight:700; font-size:15px; color:#fff; background:var(--line-2); flex:none;
+}
+.calc-campo input[type="number"]{
+  width:100%; font-family:var(--mono); font-size:22px; font-weight:600; text-align:center;
+  border:1px solid var(--line-2); border-radius:var(--r-sm); padding:9px 8px; background:var(--surface);
+}
+.calc-rangos{display:flex; gap:4px; font-size:10.5px; font-family:var(--mono); color:var(--ink-3)}
+.calc-rangos span{flex:1; text-align:center; padding:3px 2px; border-radius:4px; background:var(--surface-3)}
+.calc-rangos span.act{color:#fff; font-weight:700}
+.calc-na{display:flex; align-items:center; gap:7px; font-size:12px; color:var(--ink-2); font-weight:500}
+.calc-na input{accent-color:var(--primary)}
+.calc-msg{font-size:11.5px; color:var(--crit); font-weight:600; min-height:14px}
+.calc-tip{font-size:10.5px; color:var(--ink-3); text-align:center; margin-top:-3px}
+</style>
+
+<script>
+"use strict";
+
+/* ============================================================
+   CALCULADORA RÁPIDA DE CARGA
+   Para quien ya aplicó las escalas y solo necesita el puntaje.
+   ============================================================ */
+
+const LIMITES_CALC = {
+  pass:{min:0,   max:36,  paso:1,   unidad:"puntos",   ayuda:"0 a 36",   decimal:false},
+  ops: {min:1.6, max:6.8, paso:0.1, unidad:"puntos",   ayuda:"1,6 a 6,8", decimal:true},
+  tct: {min:0,   max:100, paso:1,   unidad:"puntos",   ayuda:"0 a 100",  decimal:false},
+  tug: {min:0,   max:600, paso:0.1, unidad:"segundos", ayuda:"segundos", decimal:true}
+};
+
+let calc = { valores:{pass:"", ops:"", tct:"", tug:""}, noAplica:{}, guardar:false };
+
+function calcEval(){
+  const scales = {};
+  ESCALAS_PRINCIPALES.forEach(k => {
+    const v = calc.valores[k];
+    const valido = calcValido(k, v);
+    scales[k] = {
+      totalDirecto: (calc.noAplica[k] || !valido) ? "" : v,
+      noEval: !!calc.noAplica[k],
+      motivo: calc.noAplica[k] ? "No aplicable — ingreso rápido" : ""
+    };
+  });
+  return { scales };
+}
+function calcValido(k, v){
+  if(v === "" || v === null || v === undefined) return false;
+  const n = num(v);
+  if(n === null) return false;
+  const L = LIMITES_CALC[k];
+  return n >= L.min && n <= L.max;
+}
+
+function renderCalculadora(){
+  const v = $("#view-calculadora");
+  const pacientes = state.patients;
+
+  v.innerHTML = `
+    <div>
+      <p class="eyebrow">Ingreso rápido de puntajes</p>
+      <h1 style="font-size:24px">Calculadora de carga</h1>
+      <p class="small muted" style="margin:6px 0 0; max-width:64ch">Para quien ya aplicó las escalas y solo necesita la categoría. Escribe los cuatro puntajes y la carga de rehabilitación se calcula al instante, con la misma tabla del servicio.</p>
+    </div>
+
+    <div class="card card-pad">
+      <div class="calc-grid" id="calcCampos">
+        ${ESCALAS_PRINCIPALES.map(k => campoCalc(k)).join("")}
+      </div>
+      <div class="row" style="margin-top:14px">
+        <button class="btn ghost sm" id="calcLimpiar">Limpiar</button>
+        <span class="spacer"></span>
+        <span class="small muted">Marca «no aplicable» y se le asignan 3 puntos, igual que en el protocolo.</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h2>Resultado</h2><span class="spacer"></span><span class="small muted">protocolo UTAC</span></div>
+      <div class="card-pad" id="calcResultado"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h2>Guardar en un paciente</h2><span class="spacer"></span>
+        <span class="small muted">opcional</span></div>
+      <div class="card-pad">
+        <p class="small muted" style="margin:0 0 12px">Si quieres dejar registro y seguir la evolución, guarda este cálculo como una evaluación. Queda marcado como «puntajes directos», sin el detalle ítem por ítem.</p>
+        <div class="grid-2">
+          <label class="field">Paciente
+            <select id="calcPaciente">
+              <option value="">— solo calcular, no guardar —</option>
+              ${pacientes.map(p => `<option value="${p.id}">${esc(p.iniciales || "sin iniciales")} · ${esc(p.cama || "s/cama")}</option>`).join("")}
+              <option value="__nuevo__">+ Paciente nuevo</option>
+            </select></label>
+          <label class="field">Fecha<input type="date" id="calcFecha" value="${hoy()}"></label>
+          <label class="field">Momento
+            <select id="calcTipo">${["Control 7 días","Ingreso","Control extraordinario","Egreso / traslado"].map(t=>`<option>${t}</option>`).join("")}</select></label>
+          <label class="field">Evaluador/a<input type="text" id="calcEvaluador" placeholder="Iniciales o nombre"></label>
+        </div>
+        <div class="grid-2" id="calcNuevo" hidden style="margin-top:12px">
+          <label class="field">Iniciales del paciente<input type="text" id="calcIniciales" maxlength="6" placeholder="J.P.M."></label>
+          <label class="field">Cama
+            <select id="calcCama"><option value="">— sin asignar —</option>${CAMAS.map(c=>`<option>${c}</option>`).join("")}</select></label>
+        </div>
+        <div class="row" style="margin-top:14px">
+          <button class="btn" id="calcGuardar" disabled>Guardar evaluación</button>
+          <span class="small" id="calcAviso" style="color:var(--ink-3)">Elige un paciente para habilitar el guardado.</span>
+        </div>
+      </div>
+    </div>`;
+
+  $("#calcCampos").addEventListener("input", (e) => {
+    const k = e.target.dataset.calc;
+    if(k){ calc.valores[k] = e.target.value; pintarCalc(); }
+  });
+  $("#calcCampos").addEventListener("change", (e) => {
+    const k = e.target.dataset.na;
+    if(k){
+      calc.noAplica[k] = e.target.checked;
+      const inp = document.querySelector(`[data-calc="${k}"]`);
+      if(inp){ inp.disabled = e.target.checked; if(e.target.checked) inp.value = ""; }
+      if(e.target.checked) calc.valores[k] = "";
+      pintarCalc();
+    }
+  });
+  $("#calcLimpiar").onclick = () => {
+    calc = { valores:{pass:"", ops:"", tct:"", tug:""}, noAplica:{}, guardar:false };
+    renderCalculadora();
+  };
+  $("#calcPaciente").onchange = (e) => {
+    $("#calcNuevo").hidden = e.target.value !== "__nuevo__";
+    actualizarBotonGuardar();
+  };
+  $("#calcGuardar").onclick = guardarCalculo;
+
+  pintarCalc();
+}
+
+function campoCalc(k){
+  const S = SCALES[k], L = LIMITES_CALC[k];
+  return `<div class="calc-campo" data-campo="${k}">
+    <div class="calc-top">
+      <span class="calc-sigla">${S.sigla}</span>
+      <span class="calc-nom">${L.ayuda}</span>
+      <span class="calc-pts" data-pts="${k}">–</span>
+    </div>
+    ${L.decimal
+      ? `<input type="text" inputmode="decimal" enterkeyhint="done" autocomplete="off" data-calc="${k}"
+           placeholder="—" value="${esc(calc.valores[k])}"${calc.noAplica[k] ? " disabled" : ""}>`
+      : `<input type="number" inputmode="numeric" enterkeyhint="done" data-calc="${k}" step="1" min="${L.min}" max="${L.max}"
+           placeholder="—" value="${esc(calc.valores[k])}"${calc.noAplica[k] ? " disabled" : ""}>`}
+    ${L.decimal ? `<div class="calc-tip">Puedes escribir coma o punto: <b>1,6</b> o <b>1.6</b></div>` : ""}
+    <div class="calc-rangos" data-rangos="${k}"></div>
+    <label class="calc-na"><input type="checkbox" data-na="${k}"${calc.noAplica[k] ? " checked" : ""}> No aplicable → 3 puntos</label>
+    <div class="calc-msg" data-msg="${k}"></div>
+  </div>`;
+}
+
+function pintarCalc(){
+  const ev = calcEval();
+  ESCALAS_PRINCIPALES.forEach(k => {
+    const val = calc.valores[k];
+    const na = !!calc.noAplica[k];
+    const valido = calcValido(k, val);
+    const vacio = val === "" || val === null;
+    const campo = document.querySelector(`[data-campo="${k}"]`);
+    const msg = document.querySelector(`[data-msg="${k}"]`);
+    const pts = document.querySelector(`[data-pts="${k}"]`);
+    const rangos = document.querySelector(`[data-rangos="${k}"]`);
+    if(!campo) return;
+
+    const listo = na || valido;
+    campo.classList.toggle("lista", listo);
+    campo.classList.toggle("error", !vacio && !valido && !na);
+    msg.textContent = (!vacio && !valido && !na) ? `Fuera de rango (${LIMITES_CALC[k].ayuda})` : "";
+
+    const p = listo ? puntosCarga(k, na ? null : num(val)) : null;
+    pts.textContent = p === null ? "–" : p;
+    pts.style.background = p === null ? "var(--line-2)" : COLOR_PTS[p];
+
+    const fila = TABLA_CARGA.find(t => t.key === k);
+    rangos.innerHTML = fila.rangos.map((r, i) => {
+      const act = p === (i + 1);
+      return `<span class="${act ? "act" : ""}" style="${act ? `background:${COLOR_PTS[i+1]}` : ""}">${r}</span>`;
+    }).join("");
+  });
+
+  const res = calcularCarga(ev);
+  $("#calcResultado").innerHTML = cargaHTML(res, false);
+  actualizarBotonGuardar();
+}
+
+function actualizarBotonGuardar(){
+  const btn = $("#calcGuardar"), sel = $("#calcPaciente"), aviso = $("#calcAviso");
+  if(!btn) return;
+  const res = calcularCarga(calcEval());
+  const completo = res.pendientes === 0;
+  const hayPaciente = sel.value !== "";
+  btn.disabled = !(completo && hayPaciente);
+  if(!completo)          { aviso.textContent = "Completa las cuatro escalas para poder guardar."; aviso.style.color = "var(--warn)"; }
+  else if(!hayPaciente)  { aviso.textContent = "Elige un paciente para habilitar el guardado."; aviso.style.color = "var(--ink-3)"; }
+  else                   { aviso.textContent = "Listo para guardar."; aviso.style.color = "var(--ok)"; }
+}
+
+function guardarCalculo(){
+  const sel = $("#calcPaciente").value;
+  let p;
+  if(sel === "__nuevo__"){
+    const ini = $("#calcIniciales").value.trim();
+    if(!ini){ alert("Escribe al menos las iniciales del paciente."); return; }
+    p = { id: uid(), iniciales: ini, cama: $("#calcCama").value, edad:"", sexo:"",
+          fechaIngreso: $("#calcFecha").value, tipoACV:"", subtipo:"", ladoAfectado:"",
+          nihss:"", nihssFecha:"", antecedentes:"", kine: $("#calcEvaluador").value, evals:[] };
+    state.patients.push(p);
+  } else {
+    p = getPaciente(sel);
+    if(!p){ alert("No se encontró el paciente."); return; }
+  }
+
+  const base = calcEval();
+  const ev = {
+    id: uid(), fecha: $("#calcFecha").value || hoy(), tipo: $("#calcTipo").value,
+    evaluador: $("#calcEvaluador").value, modo: "rapido",
+    vitals:{pas:"",pad:"",fc:"",spo2:"",fr:""},
+    scales: base.scales,
+    notas: "Puntajes ingresados directamente desde la calculadora de carga."
+  };
+  p.evals = p.evals || [];
+  p.evals.push(ev);
+  state.demo = false;
+  guardar();
+
+  calc = { valores:{pass:"", ops:"", tct:"", tug:""}, noAplica:{}, guardar:false };
+  irA("paciente", p.id);
+}
+</script>
+
+<style>
+/* ---------- criterios de movilización ---------- */
+.crit-box{display:grid; gap:10px}
+.crit-head{display:flex; gap:9px; align-items:center; flex-wrap:wrap}
+.crit-tag{
+  font-family:var(--display); font-weight:700; font-size:15px; color:var(--primary);
+  background:var(--primary-soft); border-radius:8px; padding:5px 11px;
+}
+.crit-pa{display:grid; gap:9px; grid-template-columns:repeat(auto-fit,minmax(145px,1fr))}
+.crit-lim{
+  border:1px solid var(--line-2); border-radius:var(--r-sm); padding:10px 12px;
+  background:var(--surface-2); display:grid; gap:1px; align-content:center;
+}
+.crit-lim .cl-lab{font-size:10.5px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-3)}
+.crit-lim .cl-val{font-family:var(--mono); font-size:23px; font-weight:600; line-height:1.1}
+.crit-lim .cl-uni{font-size:11px; color:var(--ink-3)}
+.crit-lim.crit{border-color:var(--crit); background:var(--crit-soft)}
+.crit-lim.crit .cl-val{color:var(--crit)}
+.crit-lim.warn{border-color:var(--warn); background:var(--warn-soft)}
+.crit-lim.warn .cl-val{color:var(--warn)}
+.crit-lim.ok{border-color:var(--ok); background:var(--ok-soft)}
+.crit-lim.ok .cl-val{color:var(--ok)}
+</style>
+
+<style>
+/* ---------- terapia de reperfusión ---------- */
+.rep-chips{display:grid; gap:10px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.rep-chip{
+  border:1px solid var(--line-2); border-radius:var(--r); padding:12px 14px; background:var(--surface-2);
+  display:grid; gap:4px; border-left:4px solid var(--primary);
+}
+.rep-chip.vacio{border-left-color:var(--line-2); opacity:.72}
+.rep-chip .rc-tit{font-family:var(--display); font-weight:700; font-size:14.5px}
+.rep-chip .rc-mom{font-family:var(--mono); font-size:15px; font-weight:600; color:var(--ink)}
+.rep-chip .rc-sub{font-size:11.5px; color:var(--ink-3)}
+.rep-chip .rc-desde{font-size:12px; font-weight:600}
+.rep-nula{padding:12px 14px; border-radius:var(--r); background:var(--surface-2); border:1px dashed var(--line-2); font-size:13px; color:var(--ink-2)}
+.rep-tiempos{display:flex; gap:8px; flex-wrap:wrap; margin-top:12px}
+</style>
+
+<script>
+"use strict";
+
+/* ============================================================
+   TERAPIA DE REPERFUSIÓN — trombólisis y trombectomía
+   ============================================================ */
+
+const REPERFUSION = [
+  "", "Sin terapia de reperfusión", "Trombólisis intravenosa",
+  "Trombectomía mecánica", "Trombólisis + trombectomía (terapia puente)", "Se desconoce"
+];
+const conTrombolisis  = (t) => t === "Trombólisis intravenosa" || t === "Trombólisis + trombectomía (terapia puente)";
+const conTrombectomia = (t) => t === "Trombectomía mecánica"   || t === "Trombólisis + trombectomía (terapia puente)";
+
+function aFechaHora(f, h){
+  if(!f) return null;
+  const d = new Date(f + "T" + (h && h.length >= 4 ? h : "00:00"));
+  return isNaN(d.getTime()) ? null : d;
+}
+function horasDesde(f, h){
+  const d = aFechaHora(f, h);
+  return d === null ? null : (Date.now() - d.getTime()) / 3600000;
+}
+function fmtTranscurrido(hs){
+  if(hs === null) return "—";
+  if(hs < 0) return "fecha futura";
+  if(hs < 48) return hs.toFixed(1).replace(".", ",") + " h";
+  const d = Math.floor(hs / 24);
+  return d + (d === 1 ? " día" : " días");
+}
+function fmtIntervalo(min){
+  if(min === null || min < 0) return "—";
+  const h = Math.floor(min / 60), m = Math.round(min % 60);
+  return h > 0 ? `${h} h ${String(m).padStart(2,"0")} min` : `${m} min`;
+}
+function minutosEntre(f1, h1, f2, h2){
+  const a = aFechaHora(f1, h1), b = aFechaHora(f2, h2);
+  if(!a || !b) return null;
+  return (b.getTime() - a.getTime()) / 60000;
+}
+function fmtMomento(f, h){
+  if(!f) return "sin registro";
+  return fFecha(f) + (h ? " · " + h + " h" : "");
+}
+
+function tarjetaReperfusion(p){
+  const tipo = p.reperfusion || "";
+  const tl = conTrombolisis(tipo), tm = conTrombectomia(tipo);
+
+  if(!tipo) return `<p class="muted small">Indica si el paciente recibió terapia de reperfusión para registrar sus horarios.</p>`;
+  if(tipo === "Sin terapia de reperfusión" || tipo === "Se desconoce")
+    return `<div class="rep-nula">${esc(tipo)}. No hay horarios que registrar.</div>`;
+
+  const chip = (titulo, f, h, sub) => {
+    const hs = horasDesde(f, h);
+    const vacio = !f;
+    return `<div class="rep-chip ${vacio ? "vacio" : ""}">
+      <span class="rc-tit">${titulo}</span>
+      <span class="rc-mom">${fmtMomento(f, h)}</span>
+      <span class="rc-sub">${esc(sub)}</span>
+      ${!vacio ? `<span class="rc-desde" style="color:${hs !== null && hs < 24 ? "var(--crit)" : "var(--ink-2)"}">
+        Hace ${fmtTranscurrido(hs)}</span>` : `<span class="rc-desde muted">Registra fecha y hora</span>`}
+    </div>`;
+  };
+
+  let html = `<div class="rep-chips">`;
+  if(tl) html += chip("Trombólisis intravenosa", p.tlFecha, p.tlHora, "Inicio de la infusión");
+  if(tm) html += chip("Trombectomía mecánica", p.tmFecha, p.tmHora, "Punción arterial / recanalización");
+  html += `</div>`;
+
+  /* intervalos desde el inicio de los síntomas */
+  const tiempos = [];
+  if(tl && p.inicioFecha && p.tlFecha){
+    const m = minutosEntre(p.inicioFecha, p.inicioHora, p.tlFecha, p.tlHora);
+    if(m !== null) tiempos.push(`<span class="pill primary">Inicio → aguja: ${fmtIntervalo(m)}</span>`);
+  }
+  if(tm && p.inicioFecha && p.tmFecha){
+    const m = minutosEntre(p.inicioFecha, p.inicioHora, p.tmFecha, p.tmHora);
+    if(m !== null) tiempos.push(`<span class="pill primary">Inicio → punción: ${fmtIntervalo(m)}</span>`);
+  }
+  if(tiempos.length) html += `<div class="rep-tiempos">${tiempos.join("")}</div>`;
+
+  /* ventana de precaución */
+  const hsInicio = p.inicioFecha ? horasDesde(p.inicioFecha, p.inicioHora) : null;
+  const hsTL = tl && p.tlFecha ? horasDesde(p.tlFecha, p.tlHora) : null;
+  const hsTM = tm && p.tmFecha ? horasDesde(p.tmFecha, p.tmHora) : null;
+  const avisos = [];
+
+  if(hsInicio !== null && hsInicio >= 0 && hsInicio < 24){
+    avisos.push(`<div class="alert crit" style="margin-top:12px"><span>
+      <b>Primeras 24 h desde el inicio de los síntomas (${fmtTranscurrido(hsInicio)}).</b><br>
+      Las guías recomiendan <b>no iniciar movilización intensa</b> — entendida como sesiones más frecuentes y prolongadas que el cuidado habitual — en este período.
+      Esto no equivale a reposo absoluto: la movilización breve y frecuente, y la del paciente que deambula por sí mismo tras un ACV leve, no está contraindicada.</span></div>`);
+  }
+  const hsMin = [hsTL, hsTM].filter(x => x !== null && x >= 0).sort((a,b) => a-b)[0];
+  if(hsMin !== undefined && hsMin < 24){
+    avisos.push(`<div class="alert warn" style="margin-top:10px"><span>
+      <b>Menos de 24 h desde la terapia de reperfusión (${fmtTranscurrido(hsMin)}).</b><br>
+      Revisa el protocolo local antes de progresar la movilización: habitualmente se realiza imagen de control a las 24 h y existen precauciones institucionales propias en este período.</span></div>`);
+  }
+  html += avisos.join("");
+  html += `<p class="footnote" style="margin:12px 0 0">La recomendación sobre movilización intensa en las primeras 24 h proviene de la guía NICE de ACV, basada principalmente en el ensayo AVERT III. Las precauciones post-reperfusión son institucionales y las define el servicio.</p>`;
+  return html;
+}
+
+
+/* ============================================================
+   CRITERIOS DE MOVILIZACIÓN — protocolo del servicio UTAC
+   Límites de presión arterial y ventana de espera, según
+   tipo de ACV y terapia de reperfusión recibida.
+   ============================================================ */
+function criteriosMovilizacion(p){
+  const tipo = (p && p.tipoACV) || "";
+  const rep  = (p && p.reperfusion) || "";
+  const hemo = /hemorr|subaracnoidea/i.test(tipo);
+
+  if(hemo) return {
+    id:"hemorragico", etiqueta:"ACV hemorrágico", pas:140, pad:90,
+    espera:{min:48, max:72, ref:"inicio", texto:"48 a 72 h desde el ACV", refTxt:"el inicio del ACV"}
+  };
+
+  const tl = conTrombolisis(rep), tm = conTrombectomia(rep);
+
+  if(tl && tm) return {
+    id:"puente", etiqueta:"ACV isquémico con terapia puente", pas:180, pad:105,
+    espera:{min:24, ref:"ultimo", texto:"24 h desde el último procedimiento", refTxt:"el último procedimiento"},
+    nota:"Con trombólisis y trombectomía se aplica el criterio más estricto de ambos (180/105)."
+  };
+  if(tm) return {
+    id:"trombectomia", etiqueta:"ACV isquémico con trombectomía mecánica", pas:180, pad:105,
+    espera:{min:24, ref:"tm", texto:"24 h post trombectomía", refTxt:"la trombectomía"}
+  };
+  if(tl) return {
+    id:"trombolisis", etiqueta:"ACV isquémico trombolizado", pas:185, pad:110,
+    espera:{min:24, ref:"tl", texto:"24 h post trombólisis", refTxt:"la trombólisis"}
+  };
+
+  return {
+    id:"isquemico", etiqueta:"ACV isquémico sin reperfusión", pas:220, pad:110, espera:null,
+    indefinido: !tipo
+  };
+}
+
+function horasReferencia(p, cr){
+  if(!cr.espera) return null;
+  const r = cr.espera.ref;
+  if(r === "tl") return horasDesde(p.tlFecha, p.tlHora);
+  if(r === "tm") return horasDesde(p.tmFecha, p.tmHora);
+  if(r === "ultimo"){
+    const xs = [horasDesde(p.tlFecha, p.tlHora), horasDesde(p.tmFecha, p.tmHora)].filter(x => x !== null);
+    return xs.length ? Math.min.apply(null, xs) : null;
+  }
+  if(r === "inicio"){
+    const a = horasDesde(p.inicioFecha, p.inicioHora);
+    return a !== null ? a : horasDesde(p.fechaIngreso, "");
+  }
+  return null;
+}
+
+function estadoEspera(p){
+  const cr = criteriosMovilizacion(p);
+  if(!cr.espera) return {cr, aplica:false};
+  const hs = horasReferencia(p, cr);
+  if(hs === null || hs < 0)
+    return {cr, aplica:true, estado:"sindato", hs:null,
+            txt:`Falta registrar la fecha y hora de ${cr.espera.refTxt} para calcular la ventana.`};
+  if(hs < cr.espera.min)
+    return {cr, aplica:true, estado:"no", hs,
+            txt:`Faltan ${fmtTranscurrido(cr.espera.min - hs)} para cumplir ${cr.espera.texto}.`};
+  if(cr.espera.max && hs < cr.espera.max)
+    return {cr, aplica:true, estado:"parcial", hs,
+            txt:`Han pasado ${fmtTranscurrido(hs)}: dentro de la franja de 48 a 72 h. La decisión de progresar es del equipo tratante.`};
+  return {cr, aplica:true, estado:"si", hs,
+          txt:`Ventana cumplida: ${fmtTranscurrido(hs)} desde ${cr.espera.refTxt}.`};
+}
+
+const TONO_ESPERA = {no:"crit", parcial:"warn", si:"ok", sindato:"warn"};
+
+function tarjetaCriterios(p, compacta){
+  const e = estadoEspera(p);
+  const cr = e.cr;
+  const tonoEsp = e.aplica ? TONO_ESPERA[e.estado] : "ok";
+
+  const cabecera = `
+    <div class="crit-head">
+      <span class="crit-tag">${esc(cr.etiqueta)}</span>
+      ${cr.indefinido ? '<span class="pill warn">Falta definir el tipo de ACV</span>' : ""}
+    </div>
+    <div class="crit-pa">
+      <div class="crit-lim"><span class="cl-lab">PAS</span><span class="cl-val">&lt; ${cr.pas}</span><span class="cl-uni">mmHg</span></div>
+      <div class="crit-lim"><span class="cl-lab">PAD</span><span class="cl-val">&lt; ${cr.pad}</span><span class="cl-uni">mmHg</span></div>
+      ${cr.espera ? `<div class="crit-lim ${tonoEsp}">
+        <span class="cl-lab">Espera</span><span class="cl-val">${cr.espera.max ? cr.espera.min + "–" + cr.espera.max : cr.espera.min} h</span>
+        <span class="cl-uni">desde ${esc(cr.espera.refTxt)}</span></div>` :
+        `<div class="crit-lim"><span class="cl-lab">Espera</span><span class="cl-val">—</span><span class="cl-uni">sin ventana definida</span></div>`}
+    </div>`;
+
+  if(compacta) return `<div class="crit-box">${cabecera}
+    ${e.aplica && e.estado !== "si" ? `<div class="alert ${tonoEsp}" style="margin-top:10px"><span>${esc(e.txt)}</span></div>` : ""}
+  </div>`;
+
+  return `<div class="crit-box">${cabecera}
+    ${e.aplica ? `<div class="alert ${tonoEsp}" style="margin-top:12px"><span>
+        <b>${e.estado === "si" ? "Ventana de espera cumplida" : e.estado === "no" ? "Ventana de espera no cumplida" :
+            e.estado === "parcial" ? "Franja intermedia" : "Sin datos para calcular la ventana"}.</b><br>${esc(e.txt)}</span></div>` : ""}
+    ${cr.nota ? `<p class="footnote" style="margin:10px 0 0">${esc(cr.nota)}</p>` : ""}
+    <p class="footnote" style="margin:10px 0 0"><b>Origen:</b> protocolo de movilización del servicio UTAC. Los límites de presión y las ventanas de espera los define el servicio; esta pantalla solo aplica la regla que corresponde a este paciente. La decisión final es del equipo tratante.</p>
+  </div>`;
+}
+
+function pillEspera(p){
+  const e = estadoEspera(p);
+  if(!e.aplica || e.estado === "si") return "";
+  if(e.estado === "no")      return `<span class="pill crit">Espera ${fmtTranscurrido(e.cr.espera.min - e.hs)}</span>`;
+  if(e.estado === "parcial") return `<span class="pill warn">48–72 h</span>`;
+  return "";
+}
+
+function pillReperfusion(p){
+  const tipo = p.reperfusion || "";
+  if(!conTrombolisis(tipo) && !conTrombectomia(tipo)) return "";
+  const hs = [conTrombolisis(tipo) && p.tlFecha ? horasDesde(p.tlFecha, p.tlHora) : null,
+              conTrombectomia(tipo) && p.tmFecha ? horasDesde(p.tmFecha, p.tmHora) : null]
+             .filter(x => x !== null && x >= 0).sort((a,b) => a-b)[0];
+  const sigla = tipo === "Trombólisis + trombectomía (terapia puente)" ? "TL + TM"
+              : (conTrombolisis(tipo) ? "TL" : "TM");
+  if(hs !== undefined && hs < 24)
+    return `<span class="pill crit">${sigla} hace ${fmtTranscurrido(hs)}</span>`;
+  return `<span class="pill primary">${sigla}</span>`;
+}
+</script>
+
+<style>
+/* ---------- comportamiento táctil y de aplicación ---------- */
+html{-webkit-text-size-adjust:100%}
+body{overscroll-behavior-y:contain; -webkit-tap-highlight-color:transparent}
+button,.opt,.pcard,label.calc-na,.amt label{touch-action:manipulation}
+.topbar,.nav,.fab,.chrono-head{user-select:none; -webkit-user-select:none}
+
+/* barra inferior tipo aplicación en el teléfono */
+.nav svg{width:21px; height:21px; display:block}
+@media (min-width:720px){
+  .nav svg{display:none}
+}
+@media (max-width:719px){
+  /* iOS hace zoom al enfocar campos de menos de 16px */
+  input,select,textarea{font-size:16px}
+  .nav{
+    position:fixed; left:0; right:0; bottom:0; z-index:50; margin:0;
+    background:var(--surface); border-top:1px solid var(--line);
+    padding:5px 3px calc(5px + env(safe-area-inset-bottom,0px));
+    display:grid; grid-template-columns:repeat(6,1fr); gap:0; overflow:visible;
+    box-shadow:0 -3px 16px rgba(14,26,44,.09);
+  }
+  .nav button{
+    display:grid; justify-items:center; gap:3px; padding:7px 1px 5px;
+    font-size:9.5px; letter-spacing:-.01em; border-bottom:0; border-radius:10px; margin:0;
+    min-height:50px; align-content:center;
+  }
+  .nav button[aria-selected="true"]{background:var(--primary-soft)}
+  main{padding-bottom:100px}
+  .fab{bottom:calc(80px + env(safe-area-inset-bottom,0px)); width:52px; height:52px}
+  .chrono{bottom:calc(142px + env(safe-area-inset-bottom,0px))}
+  .btn{min-height:44px}
+  .opt{min-height:42px; align-items:center}
+}
+.storage-row{display:flex; gap:10px; align-items:center; flex-wrap:wrap; font-size:13px}
+</style>
+
+<script>
+"use strict";
+
+/* ============================================================
+   COMPORTAMIENTO DE APLICACIÓN NATIVA
+   ============================================================ */
+
+/* --- 1. Persistencia del almacenamiento -------------------- */
+let estadoPersistencia = {soportado:false, persistente:false, usoMB:null, cuotaMB:null};
+
+async function asegurarPersistencia(){
+  try{
+    if(!navigator.storage || !navigator.storage.persist) return;
+    estadoPersistencia.soportado = true;
+    let ok = await navigator.storage.persisted();
+    if(!ok) ok = await navigator.storage.persist();
+    estadoPersistencia.persistente = !!ok;
+    if(navigator.storage.estimate){
+      const e = await navigator.storage.estimate();
+      if(e.usage != null)  estadoPersistencia.usoMB   = e.usage / 1048576;
+      if(e.quota != null)  estadoPersistencia.cuotaMB = e.quota / 1048576;
+    }
+  }catch(e){ /* el navegador no lo soporta: seguimos igual */ }
+}
+
+/* --- 4. Compartir o descargar el respaldo -------------------- */
+function descargarArchivo(contenido, nombre, tipo){
+  try{
+    const url = URL.createObjectURL(new Blob([contenido], {type:tipo}));
+    const a = el("a", {href:url, download:nombre});
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+    return true;
+  }catch(e){ return false; }
+}
+
+async function compartirRespaldo(contenido, nombre, tipo, nodoMsg){
+  const decir = (t, color) => { if(nodoMsg){ nodoMsg.textContent = t; nodoMsg.style.color = color; } };
+  try{
+    const archivo = new File([contenido], nombre, {type:tipo});
+    if(navigator.canShare && navigator.canShare({files:[archivo]})){
+      await navigator.share({files:[archivo], title:"Respaldo KineStroke"});
+      marcarRespaldo();
+      decir("Respaldo compartido ✓", "var(--ok)");
+      vibrar();
+      return;
+    }
+  }catch(e){
+    if(e && e.name === "AbortError"){ decir("", ""); return; }
+  }
+  if(descargarArchivo(contenido, nombre, tipo)){
+    marcarRespaldo();
+    decir("Archivo descargado ✓", "var(--ok)");
+  } else {
+    decir("Tu navegador no permite descargar aquí: copia el texto del cuadro.", "var(--warn)");
+  }
+}
+
+/* --- 5. Recordatorio de respaldo ----------------------------- */
+function marcarRespaldo(){ state.ultimoRespaldo = hoy(); guardar(); }
+function diasSinRespaldo(){
+  if(!state.patients.length || state.demo) return null;
+  if(!state.ultimoRespaldo) return 999;
+  const d = diasEntre(state.ultimoRespaldo, hoy());
+  return d === null ? null : d;
+}
+function bannerRespaldo(){
+  const d = diasSinRespaldo();
+  if(d === null || d < 7) return "";
+  const texto = d === 999
+    ? "Todavía no has hecho ningún respaldo de los datos."
+    : `Han pasado ${d} días desde tu último respaldo.`;
+  return `<div class="alert warn no-print" style="align-items:center">
+    <span style="flex:1">${texto} Los datos viven solo en este dispositivo: un respaldo semanal es lo único que los protege.</span>
+    <button class="btn sm ghost" onclick="irA('datos')">Respaldar ahora</button>
+  </div>`;
+}
+
+/* --- 6. Iconos de la barra inferior -------------------------- */
+const ICONOS_NAV = {
+  pacientes:'<path d="M3 18v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6"/><path d="M3 18h18M6 10V7a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v3"/>',
+  paciente:'<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/>',
+  evaluacion:'<path d="M9 4h6a1 1 0 0 1 1 1v1H8V5a1 1 0 0 1 1-1z"/><path d="M16 6h2a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h2"/><path d="M8.5 13l2 2 4-4"/>',
+  calculadora:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 7h6M9 11h.01M12 11h.01M15 11h.01M9 15h.01M12 15h.01M15 15v3M9 18h3"/>',
+  referencia:'<path d="M4 5a2 2 0 0 1 2-2h12v18H6a2 2 0 0 1-2-2z"/><path d="M8 7h7M8 11h7"/>',
+  datos:'<ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/>'
+};
+function ponerIconosNav(){
+  document.querySelectorAll(".nav button").forEach(b => {
+    const p = ICONOS_NAV[b.dataset.view];
+    if(!p || b.querySelector("svg")) return;
+    b.insertAdjacentHTML("afterbegin",
+      `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`);
+  });
+}
+</script>
+
+<script>
+"use strict";
+
+/* ============================================================
+   VISTA · REFERENCIA
+   ============================================================ */
+function renderReferencia(){
+  const v = $("#view-referencia");
+  const tarjetas = ESCALAS_ORDEN.map(k => {
+    const S = SCALES[k];
+    const bandas = S.bandas.map((b,i) => {
+      const prev = i === 0 ? (S.min || 0) : (S.bandas[i-1].max + (S.decimales ? 0.01 : 1));
+      const hasta = b.max >= 1e8 ? "+" : String(b.max).replace(".", ",");
+      const desde = String(+prev.toFixed(2)).replace(".", ",");
+      return `<tr><td class="num">${desde} – ${hasta}</td><td><span class="pill ${b.tono}">${esc(b.txt)}</span></td></tr>`;
+    }).join("");
+    return `<div class="card">
+      <div class="card-head">
+        <h3>${S.sigla}</h3>
+        <span class="small muted">${esc(S.nombre)}</span>
+        <span class="spacer"></span>
+        <span class="pill ${ESCALAS_PRINCIPALES.includes(k)?"primary":""}">${ESCALAS_PRINCIPALES.includes(k)?"Principal":"Complementaria"}</span>
+      </div>
+      <div class="card-pad">
+        <p class="small" style="margin:0 0 10px">${esc(S.desc)}${S.tipo!=="tiempo" ? ` · ${S.items.length} ítems` : ""}</p>
+        ${S.tipo === "tiempo" ? `<ol class="ref-list" style="margin-bottom:12px">${S.protocolo.map(x=>`<li>${esc(x)}</li>`).join("")}</ol>` : ""}
+        <div class="scroll-x"><table><thead><tr><th>Puntaje</th><th>Interpretación</th></tr></thead><tbody>${bandas}</tbody></table></div>
+        <p class="footnote" style="margin:12px 0 0">${esc(S.nota)}</p>
+        <p class="footnote" style="margin:6px 0 0"><b>Fuente:</b> ${esc(S.fuente)}</p>
+      </div>
+    </div>`;
+  }).join("");
+
+  const ESCENARIOS = [
+    {sit:"ACV isquémico sin terapia de reperfusión", pas:"< 220", pad:"< 110", esp:"Sin ventana de espera definida"},
+    {sit:"ACV isquémico trombolizado", pas:"< 185", pad:"< 110", esp:"24 h post trombólisis"},
+    {sit:"ACV isquémico con trombectomía mecánica", pas:"< 180", pad:"< 105", esp:"24 h post trombectomía"},
+    {sit:"Terapia puente (trombólisis + trombectomía)", pas:"< 180", pad:"< 105", esp:"24 h desde el último procedimiento"},
+    {sit:"ACV hemorrágico", pas:"< 140", pad:"< 90", esp:"48 a 72 h desde el ACV"}
+  ];
+  const vitTabla = ESCENARIOS.map(e =>
+    `<tr><td><b>${e.sit}</b></td><td class="num">${e.pas}</td><td class="num">${e.pad}</td><td>${e.esp}</td></tr>`).join("");
+
+  v.innerHTML = `
+    <div>
+      <p class="eyebrow">Manual de bolsillo</p>
+      <h1 style="font-size:24px">Escalas, puntos de corte y criterios</h1>
+      <p class="small muted" style="margin:6px 0 0; max-width:62ch">Resumen operativo para el equipo de kinesiología de la UTAC. Los puntos de corte son orientativos y se interpretan junto al examen clínico completo, no de forma aislada.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h3>NIHSS al ingreso</h3><span class="small muted">lo aplica neurología · se transcribe desde la ficha</span></div>
+      <div class="card-pad scroll-x">
+        <table><thead><tr><th>Puntaje</th><th>Interpretación</th></tr></thead><tbody>
+          <tr><td class="num">0</td><td><span class="pill ok">Sin déficit neurológico</span></td></tr>
+          <tr><td class="num">1 – 4</td><td><span class="pill ok">ACV leve</span></td></tr>
+          <tr><td class="num">5 – 15</td><td><span class="pill warn">ACV moderado</span></td></tr>
+          <tr><td class="num">16 – 20</td><td><span class="pill warn">ACV moderado a severo</span></td></tr>
+          <tr><td class="num">21 – 42</td><td><span class="pill crit">ACV severo</span></td></tr>
+        </tbody></table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h3>Categorización de carga de rehabilitación</h3>
+        <span class="small muted">protocolo interno del equipo · UTAC</span></div>
+      <div class="card-pad">
+        <p class="small" style="margin:0 0 12px; max-width:62ch">Cada una de las cuatro escalas principales aporta 1, 2 o 3 puntos según el rango en que caiga. La suma va de 4 a 12 puntos y define la categoría. A mayor puntaje, peor desempeño funcional y mayor carga de rehabilitación asignada.</p>
+        <div class="scroll-x">
+          <table>
+            <thead><tr><th>Variable</th><th>X · 1 punto</th><th>Y · 2 puntos</th><th>Z · 3 puntos</th></tr></thead>
+            <tbody>
+              ${TABLA_CARGA.map(t => `<tr><td><b>${SCALES[t.key].sigla}</b></td>${t.rangos.map(r => `<td class="num">${r}</td>`).join("")}</tr>`).join("")}
+            </tbody>
+          </table>
+        </div>
+        <div class="grid-3" style="margin-top:14px">
+          ${CATEGORIAS_CARGA.map(c => `<div class="carga-sello ${c.tono}" style="min-width:0">
+            <span class="cs-cat">${c.nombre}</span><span class="cs-pts">${c.rango}</span></div>`).join("")}
+        </div>
+        <p class="eyebrow" style="margin:18px 0 7px">Reglas de cálculo</p>
+        <ul class="ref-list">
+          <li><b>Escala no aplicable</b> (por ejemplo, TUG en un paciente que no tolera bipedestación): se le asignan <b>3 puntos</b>, el máximo, según acuerdo del equipo.</li>
+          <li><b>Valores en el límite:</b> la fila se lee de izquierda a derecha y gana la primera columna que contiene el valor. Por eso un OPS de 3,2 suma 1 punto y un OPS de 5,2 suma 2 puntos.</li>
+          <li><b>Decimales del TUG:</b> la tabla usa números enteros, así que el cálculo lee 1 punto hasta 8 s inclusive, 2 puntos sobre 8 y hasta 15 s, y 3 puntos sobre 15 s. Así no quedan valores sin categoría.</li>
+          <li>Se recalcula en <b>cada evaluación</b>, de modo que la categoría puede cambiar durante la hospitalización.</li>
+        </ul>
+        <p class="footnote" style="margin:12px 0 0"><b>Origen:</b> construcción del equipo de kinesiología del servicio UTAC para asignar carga de rehabilitación. No corresponde a una escala publicada ni validada externamente: es un instrumento de gestión clínica local, y como tal orienta la decisión del equipo, no la reemplaza.</p>
+      </div>
+    </div>
+
+    ${tarjetas}
+
+    <div class="card">
+      <div class="card-head"><h3>Criterios de movilización</h3>
+        <span class="small muted">protocolo del servicio UTAC</span></div>
+      <div class="card-pad">
+        <p class="small" style="margin:0 0 12px; max-width:64ch">Los límites de presión arterial y la ventana de espera dependen del tipo de ACV y de la terapia de reperfusión recibida. La app aplica sola la fila que corresponde a cada paciente y la muestra en su ficha y antes de tomar los signos vitales.</p>
+        <div class="scroll-x"><table>
+          <thead><tr><th>Situación</th><th>PAS</th><th>PAD</th><th>Espera antes de movilizar</th></tr></thead>
+          <tbody>${vitTabla}</tbody></table></div>
+
+        <p class="eyebrow" style="margin:18px 0 7px">Parámetros generales, para cualquier paciente</p>
+        <div class="scroll-x"><table>
+          <thead><tr><th>Parámetro</th><th>Rango</th></tr></thead>
+          <tbody>
+            <tr><td><b>PAS</b> (límite inferior)</td><td class="num">≥ 90 mmHg — bajo eso, riesgo de intolerancia ortostática</td></tr>
+            <tr><td><b>FC</b></td><td class="num">50 – 120 lpm</td></tr>
+            <tr><td><b>SpO₂</b></td><td class="num">≥ 90 %</td></tr>
+            <tr><td><b>FR</b></td><td class="num">10 – 30 rpm</td></tr>
+          </tbody></table></div>
+
+        <p class="eyebrow" style="margin:18px 0 7px">Sobre la intensidad en las primeras 24 h</p>
+        <p class="small" style="margin:0; max-width:64ch">Cumplir los criterios de presión y la ventana de espera habilita movilizar, pero no define la intensidad. La guía NICE de ACV, basada en el ensayo AVERT III, recomienda <b>no iniciar movilización intensa</b> — sesiones más frecuentes y prolongadas que el cuidado habitual — dentro de las primeras 24 horas desde el inicio de los síntomas en pacientes que requieren asistencia. Esto no equivale a reposo absoluto: la movilización breve y frecuente se mantiene, y el paciente que deambula por sí mismo tras un ACV leve no debe ser desalentado.</p>
+
+        <p class="footnote" style="margin:14px 0 0"><b>Origen:</b> los límites de presión arterial y las ventanas de espera corresponden al protocolo del servicio UTAC. Fuera de rango la app marca una alerta, pero la decisión de movilizar, diferir o suspender es siempre del equipo tratante.</p>
+      </div>
+    </div>
+
+    <div class="card card-pad">
+      <h3 style="font-size:15px">Periodicidad acordada</h3>
+      <ul class="ref-list" style="margin-top:8px">
+        <li><b>Al ingreso del paciente:</b> las cuatro escalas principales + NIHSS transcrito de la ficha.</li>
+        <li><b>Cada 7 días:</b> repetir las cuatro escalas principales y los signos vitales.</li>
+        <li><b>Berg y TUG</b> solo cuando el paciente tolera bipedestación con seguridad; si no, marcar «no se aplica» con el motivo.</li>
+        <li><b>Al egreso o traslado:</b> registrar una evaluación final para cerrar la curva de evolución.</li>
+      </ul>
+    </div>`;
+}
+
+/* ============================================================
+   VISTA · DATOS (respaldo local)
+   ============================================================ */
+function csvDeTodo(){
+  const cols = ["paciente","cama","edad","sexo","tipo_acv","clasificacion","lado","nihss_ingreso","fecha_ingreso",
+    "reperfusion","inicio_sintomas","hora_trombolisis","hora_trombectomia",
+    "fecha_eval","momento","evaluador","pas","pad","fc","spo2","fr"]
+    .concat(ESCALAS_ORDEN.map(k => SCALES[k].sigla.toLowerCase()))
+    .concat(["carga_puntos","carga_categoria","observaciones"]);
+  const filas = [cols.join(";")];
+  state.patients.forEach(p => {
+    evalsOrdenadas(p).forEach(ev => {
+      const v = ev.vitals || {};
+      const base = [p.iniciales, p.cama, p.edad, p.sexo, p.tipoACV, p.subtipo, p.ladoAfectado, p.nihss, p.fechaIngreso,
+        p.reperfusion||"", (p.inicioFecha ? fmtMomento(p.inicioFecha,p.inicioHora) : ""),
+        (p.tlFecha ? fmtMomento(p.tlFecha,p.tlHora) : ""), (p.tmFecha ? fmtMomento(p.tmFecha,p.tmHora) : ""),
+        ev.fecha, ev.tipo, ev.evaluador || "", v.pas||"", v.pad||"", v.fc||"", v.spo2||"", v.fr||""];
+      const sc = ESCALAS_ORDEN.map(k => {
+        const t = totalEscala(k, (ev.scales||{})[k]);
+        return t === null ? "" : String(t).replace(".", ",");
+      });
+      const rc = calcularCarga(ev);
+      const fila = base.concat(sc, [rc.total, rc.cat.nombre, (ev.notas||"").replace(/[\r\n;]+/g, " ")]);
+      filas.push(fila.map(x => String(x == null ? "" : x)).join(";"));
+    });
+  });
+  return filas.join("\n");
+}
+
+function renderDatos(){
+  const v = $("#view-datos");
+  const nEval = state.patients.reduce((a,p) => a + (p.evals||[]).length, 0);
+  v.innerHTML = `
+    <div>
+      <p class="eyebrow">Respaldo y traspaso</p>
+      <h1 style="font-size:24px">Tus datos</h1>
+    </div>
+
+    <div class="card card-pad">
+      <div class="alert info" style="margin-bottom:14px">
+        <span>Todo se guarda <b>únicamente en este navegador y en este dispositivo</b>. No se envía a ningún servidor. Si borras los datos del navegador o cambias de equipo, necesitas un respaldo.</span>
+      </div>
+      <div class="kpis">
+        <div class="kpi"><div class="k-label">Pacientes</div><div class="k-val">${state.patients.length}</div></div>
+        <div class="kpi"><div class="k-label">Evaluaciones</div><div class="k-val">${nEval}</div></div>
+        <div class="kpi"><div class="k-label">Último respaldo</div>
+          <div class="k-val" style="font-size:17px; ${diasSinRespaldo() !== null && diasSinRespaldo() >= 7 ? "color:var(--warn)" : ""}">
+            ${state.ultimoRespaldo ? fFecha(state.ultimoRespaldo) : "nunca"}</div></div>
+      </div>
+      <div class="storage-row" style="margin-top:14px">
+        <span class="pill ${estadoPersistencia.persistente ? "ok" : "warn"}">
+          ${estadoPersistencia.persistente ? "Almacenamiento protegido" : "Almacenamiento sin protección reforzada"}</span>
+        ${estadoPersistencia.usoMB !== null ? `<span class="small muted num">${estadoPersistencia.usoMB.toFixed(2)} MB usados${estadoPersistencia.cuotaMB ? " de " + Math.round(estadoPersistencia.cuotaMB) + " MB" : ""}</span>` : ""}
+      </div>
+      <p class="footnote" style="margin:8px 0 0">«Protegido» significa que el navegador se compromete a no borrar estos datos por falta de espacio. Igual conviene respaldar: no protege si alguien limpia los datos del navegador ni si se pierde el teléfono.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h2>Exportar</h2></div>
+      <div class="card-pad">
+        <div class="row" style="margin-bottom:10px">
+          <button class="btn ghost sm" id="btnExpJSON">Respaldo completo (JSON)</button>
+          <button class="btn ghost sm" id="btnExpCSV">Planilla para Excel (CSV)</button>
+          <button class="btn sm" id="btnCompartir">Compartir o guardar archivo</button>
+          <button class="btn ghost sm" id="btnCopiar">Copiar texto</button>
+          <span class="small muted" id="copyMsg"></span>
+        </div>
+        <textarea class="copybox" id="expBox" readonly placeholder="Elige un formato para generar el respaldo."></textarea>
+        <p class="footnote" style="margin:8px 0 0">Para compartir un paciente con otro kinesiólogo: exporta el JSON, envíalo por el canal que use el servicio y que la otra persona lo pegue en «Importar». El CSV se abre directamente en Excel (separador punto y coma).</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h2>Importar respaldo</h2></div>
+      <div class="card-pad">
+        <textarea class="copybox" id="impBox" placeholder="Pega aquí el contenido de un respaldo JSON..."></textarea>
+        <div class="row" style="margin-top:10px">
+          <button class="btn ghost sm" id="btnImpMerge">Agregar a lo existente</button>
+          <button class="btn ghost sm" id="btnImpReemplazar">Reemplazar todo</button>
+          <span class="small muted" id="impMsg"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card card-pad">
+      <div class="row">
+        <div><b style="font-size:14px">Borrar todos los datos</b>
+          <p class="small muted" style="margin:3px 0 0">Elimina pacientes y evaluaciones de este dispositivo.</p></div>
+        <span class="spacer"></span>
+        <button class="btn danger sm" id="btnBorrarTodo">Borrar todo</button>
+      </div>
+    </div>
+
+    <p class="footnote">KineStroke · herramienta de registro para el equipo de kinesiología de la UTAC. No reemplaza la ficha clínica institucional ni el juicio del equipo tratante.</p>`;
+
+  const box = $("#expBox");
+  let formatoActual = "json";
+  $("#btnExpJSON").onclick = () => { formatoActual = "json"; box.value = JSON.stringify(state, null, 2); box.select(); };
+  $("#btnExpCSV").onclick  = () => { formatoActual = "csv";  box.value = csvDeTodo(); box.select(); };
+  $("#btnCompartir").onclick = () => {
+    if(!box.value) box.value = JSON.stringify(state, null, 2);
+    const esCSV = formatoActual === "csv";
+    compartirRespaldo(box.value,
+      `kinestroke-${esCSV ? "planilla" : "respaldo"}-${hoy()}.${esCSV ? "csv" : "json"}`,
+      esCSV ? "text/csv" : "application/json", $("#copyMsg"));
+  };
+  $("#btnCopiar").onclick  = async () => {
+    if(!box.value){ box.value = JSON.stringify(state, null, 2); }
+    await copiar(box.value, $("#copyMsg"));
+  };
+  $("#btnImpMerge").onclick = () => importar(false);
+  $("#btnImpReemplazar").onclick = () => importar(true);
+  $("#btnBorrarTodo").onclick = () => {
+    if(confirm("¿Borrar todos los pacientes y evaluaciones de este dispositivo?")){
+      state = {version:1, patients:[], demo:false};
+      guardar(); irA("pacientes");
+    }
+  };
+}
+
+function importar(reemplazar){
+  const msg = $("#impMsg");
+  try{
+    const data = JSON.parse($("#impBox").value);
+    const nuevos = Array.isArray(data) ? data : (data.patients || []);
+    if(!nuevos.length) throw new Error("sin pacientes");
+    if(reemplazar) state.patients = nuevos;
+    else {
+      const ids = new Set(state.patients.map(p => p.id));
+      nuevos.forEach(p => { if(ids.has(p.id)) p.id = uid(); state.patients.push(p); });
+    }
+    state.demo = false;
+    guardar();
+    msg.textContent = `${nuevos.length} paciente(s) importado(s).`;
+    msg.style.color = "var(--ok)";
+    setTimeout(() => irA("pacientes"), 700);
+  }catch(e){
+    msg.textContent = "No se pudo leer el respaldo: revisa que sea un JSON completo.";
+    msg.style.color = "var(--crit)";
+  }
+}
+
+async function copiar(texto, nodoMsg){
+  try{
+    await navigator.clipboard.writeText(texto);
+    if(nodoMsg){ nodoMsg.textContent = "Copiado ✓"; nodoMsg.style.color = "var(--ok)"; }
+  }catch(e){
+    if(nodoMsg){ nodoMsg.textContent = "Selecciona el texto y copia con Ctrl/Cmd + C"; nodoMsg.style.color = "var(--warn)"; }
+  }
+  setTimeout(() => { if(nodoMsg) nodoMsg.textContent = ""; }, 3500);
+}
+
+/* ============================================================
+   RESUMEN PARA LA FICHA CLÍNICA
+   ============================================================ */
+function textoResumen(p){
+  const evs = evalsOrdenadas(p);
+  const u = evs[evs.length-1];
+  if(!u) return "Sin evaluaciones registradas.";
+  const prim = evs[0];
+  const v = u.vitals || {};
+  const L = [];
+  L.push(`KINESIOLOGÍA · UTAC — Evaluación ${u.tipo.toLowerCase()}`);
+  L.push(`Paciente: ${p.iniciales || "—"} · Cama ${p.cama || "—"}${p.edad ? ` · ${p.edad} años` : ""}`);
+  L.push(`Diagnóstico: ${p.tipoACV || "ACV por precisar"}${p.subtipo && p.subtipo!=="No aplica / por precisar" ? `, ${p.subtipo}` : ""}${p.ladoAfectado && p.ladoAfectado!=="Sin compromiso motor" ? `, compromiso ${p.ladoAfectado.toLowerCase()}` : ""}${p.nihss !== "" && p.nihss != null ? ` · NIHSS ingreso ${p.nihss}` : ""}`);
+  if(p.reperfusion && p.reperfusion !== "Se desconoce"){
+    const partes = [p.reperfusion];
+    if(conTrombolisis(p.reperfusion) && p.tlFecha)  partes.push(`trombólisis ${fmtMomento(p.tlFecha, p.tlHora)}`);
+    if(conTrombectomia(p.reperfusion) && p.tmFecha) partes.push(`trombectomía ${fmtMomento(p.tmFecha, p.tmHora)}`);
+    if(p.inicioFecha) partes.push(`inicio de síntomas ${fmtMomento(p.inicioFecha, p.inicioHora)}`);
+    L.push(`Reperfusión: ${partes.join(" · ")}.`);
+  }
+  L.push(`Fecha de evaluación: ${fFecha(u.fecha)}${p.fechaIngreso ? ` (día ${diasEntre(p.fechaIngreso, u.fecha)} de hospitalización)` : ""}`);
+  L.push("");
+  L.push(`Signos vitales previos a la sesión: PA ${v.pas||"—"}/${v.pad||"—"} mmHg · FC ${v.fc||"—"} lpm · SpO2 ${v.spo2||"—"}% · FR ${v.fr||"—"} rpm`);
+  const alertas = evaluarVitales(v, p);
+  if(alertas.length) L.push(`Alertas: ${alertas.map(a => a.txt).join("; ")}.`);
+  const crm = criteriosMovilizacion(p);
+  const esp = estadoEspera(p);
+  L.push(`Criterios de movilización aplicables (${crm.etiqueta}): PAS < ${crm.pas} mmHg, PAD < ${crm.pad} mmHg${crm.espera ? `, espera de ${crm.espera.texto}` : ""}.`);
+  if(esp.aplica) L.push(`  ${esp.txt}`);
+  L.push("");
+  const rc = calcularCarga(u);
+  L.push(`Categorización de carga de rehabilitación (protocolo UTAC): ${rc.total} puntos de 12 → ${rc.cat.nombre.toUpperCase()}.`);
+  L.push(`  Detalle: ${rc.detalle.map(x => `${x.sigla} ${x.valor !== null ? fmtTotal(x.key, x.valor) : (x.noAplica ? "no aplicada" : "incompleta")} = ${x.puntos} pto${x.puntos>1?"s":""}`).join(" · ")}.`);
+  L.push("");
+  L.push("Escalas aplicadas:");
+  ESCALAS_ORDEN.forEach(k => {
+    const reg = (u.scales||{})[k];
+    if(!reg) return;
+    const t = totalEscala(k, reg);
+    if(t === null){
+      if(reg.noEval) L.push(`- ${SCALES[k].sigla}: no se aplica${reg.motivo ? ` (${reg.motivo})` : ""}.`);
+      return;
+    }
+    const band = interpretar(k, t);
+    const t0 = prim !== u ? totalEscala(k, (prim.scales||{})[k]) : null;
+    const comp = t0 !== null ? ` — ingreso ${fmtTotal(k,t0)}, variación ${(t-t0) > 0 ? "+" : ""}${String(+(t-t0).toFixed(1)).replace(".",",")}` : "";
+    const extra = k === "tug" && reg.ayuda && reg.ayuda !== "Ninguna" ? ` (con ${reg.ayuda.toLowerCase()})` : "";
+    L.push(`- ${SCALES[k].sigla} ${fmtTotal(k,t)}${SCALES[k].tipo!=="tiempo" ? `/${SCALES[k].max}` : ""}${extra}: ${band.txt}${comp}.`);
+  });
+  if(u.notas){ L.push(""); L.push(`Observaciones: ${u.notas}`); }
+  if(u.evaluador){ L.push(""); L.push(`Evaluó: ${u.evaluador}`); }
+  return L.join("\n");
+}
+
+function mostrarResumen(p){
+  const texto = textoResumen(p);
+  const bg = el("div", {className:"modal-bg"});
+  bg.innerHTML = `<div class="modal">
+    <div class="card-head"><h2>Resumen para la ficha clínica</h2><span class="spacer"></span><button class="icon-btn" data-cerrar>Cerrar</button></div>
+    <div class="card-pad">
+      <textarea class="copybox" id="resBox" style="min-height:290px">${esc(texto)}</textarea>
+      <div class="row" style="margin-top:10px">
+        <button class="btn sm" data-copiar>Copiar texto</button>
+        <button class="btn ghost sm" onclick="window.print()">Imprimir ficha</button>
+        <span class="small muted" id="resMsg"></span>
+      </div>
+      <p class="footnote" style="margin:10px 0 0">Revisa el texto antes de pegarlo: la app resume lo registrado, la redacción clínica final es tuya.</p>
+    </div>
+  </div>`;
+  bg.addEventListener("click", (e) => {
+    if(e.target === bg || e.target.hasAttribute("data-cerrar")) bg.remove();
+    if(e.target.hasAttribute("data-copiar")) copiar($("#resBox", bg).value, $("#resMsg", bg));
+  });
+  document.body.appendChild(bg);
+}
+
+/* ============================================================
+   DATOS DE EJEMPLO
+   ============================================================ */
+function sembrarDemo(){
+  const d = (n) => { const x = new Date(); x.setDate(x.getDate() - n); return x.toISOString().slice(0,10); };
+  const items = (key, vals) => {
+    const o = {};
+    SCALES[key].items.forEach((it,i) => o[it.id] = String(vals[i]));
+    return {items:o, noEval:false, motivo:""};
+  };
+  state.patients = [
+    {
+      id:"demo1", iniciales:"J.P.M.", cama:"531 A", edad:"68", sexo:"Masculino",
+      fechaIngreso:d(15), tipoACV:"Isquémico", subtipo:"PACI (parcial anterior)",
+      ladoAfectado:"Izquierdo", nihss:"11", nihssFecha:d(15),
+      reperfusion:"Trombólisis intravenosa", inicioFecha:d(15), inicioHora:"07:20",
+      tlFecha:d(15), tlHora:"09:05", tmFecha:"", tmHora:"",
+      antecedentes:"HTA, DM2. Sin oxigenoterapia. Tolera sedestación 40 minutos.",
+      kine:"Equipo UTAC",
+      evals:[
+        { id:"d1a", fecha:d(14), tipo:"Ingreso", evaluador:"Equipo UTAC",
+          vitals:{pas:"148",pad:"88",fc:"84",spo2:"95",fr:"18"},
+          notas:"Ingresa con hemiparesia izquierda de predominio braquial. Se inicia movilización asistida en cama.",
+          scales:{ tct:items("tct",[0,12,12,0]), pass:items("pass",[2,1,0,1,0,1,2,1,1,0,1,0]),
+            tug:{tiempo:"",ayuda:"",asistencia:"No logra realizar la prueba",obs:"No tolera bipedestación",noEval:true,motivo:"No logra bipedestación"},
+            ops:items("ops",[1.2,0.8,0.8,0.8]), barthel:items("barthel",[5,0,0,0,5,5,0,0,0,0]),
+            berg:{items:{},noEval:true,motivo:"No tolera bipedestación"}, mrc:items("mrc",[2,2,1,3]) } },
+        { id:"d1b", fecha:d(7), tipo:"Control 7 días", evaluador:"Equipo UTAC",
+          vitals:{pas:"136",pad:"80",fc:"78",spo2:"96",fr:"17"},
+          notas:"Logra sedestación al borde de cama con supervisión. Inicia transferencias con asistencia mínima.",
+          scales:{ tct:items("tct",[12,25,12,12]), pass:items("pass",[3,2,1,2,1,2,3,2,2,1,2,0]),
+            tug:{tiempo:"",ayuda:"",asistencia:"Asistencia moderada",obs:"",noEval:true,motivo:"Bipedestación solo con asistencia"},
+            ops:items("ops",[0.8,0.4,0.8,0.4]), barthel:items("barthel",[10,0,5,5,10,10,5,5,0,0]),
+            berg:{items:{},noEval:true,motivo:"Bipedestación solo con asistencia"}, mrc:items("mrc",[3,2,2,4]) } },
+        { id:"d1c", fecha:d(0), tipo:"Control 7 días", evaluador:"Equipo UTAC",
+          vitals:{pas:"128",pad:"76",fc:"74",spo2:"97",fr:"16"},
+          notas:"Marcha 12 metros con bastón y supervisión. Objetivo de la semana: subir y bajar un tramo de escalera.",
+          scales:{ tct:items("tct",[25,25,25,12]), pass:items("pass",[3,3,2,3,2,3,3,3,3,2,3,1]),
+            tug:{tiempo:"22.4",ayuda:"Bastón",asistencia:"Supervisión",obs:"Giro más lento hacia el lado parético",noEval:false,motivo:""},
+            ops:items("ops",[0.4,0.4,0.4,0.4]), barthel:items("barthel",[10,0,5,10,10,10,10,10,10,5]),
+            berg:items("berg",[3,3,4,3,3,2,3,2,2,2,2,2,1,1]), mrc:items("mrc",[4,3,3,4]) } }
+      ]
+    },
+    {
+      id:"demo2", iniciales:"R.S.A.", cama:"532 C", edad:"74", sexo:"Femenino",
+      fechaIngreso:d(9), tipoACV:"Hemorrágico intracerebral", subtipo:"No aplica / por precisar",
+      ladoAfectado:"Derecho", nihss:"17", nihssFecha:d(9),
+      reperfusion:"Sin terapia de reperfusión", inicioFecha:d(9), inicioHora:"22:40",
+      tlFecha:"", tlHora:"", tmFecha:"", tmHora:"",
+      antecedentes:"HTA de larga data. Requiere oxígeno por naricera 2 L/min.",
+      kine:"Equipo UTAC",
+      evals:[
+        { id:"d2a", fecha:d(8), tipo:"Ingreso", evaluador:"Equipo UTAC",
+          vitals:{pas:"172",pad:"96",fc:"92",spo2:"93",fr:"22"},
+          notas:"Se difiere sedestación al borde de cama por cifras tensionales. Se trabaja movilización pasiva y posicionamiento.",
+          scales:{ tct:items("tct",[0,0,0,0]), pass:items("pass",[1,0,0,0,0,1,1,0,0,0,0,0]),
+            tug:{tiempo:"",ayuda:"",asistencia:"No logra realizar la prueba",obs:"",noEval:true,motivo:"Sin control de tronco"},
+            ops:items("ops",[1.6,1.2,1.2,0.8]), barthel:items("barthel",[0,0,0,0,0,0,0,0,0,0]),
+            berg:{items:{},noEval:true,motivo:"Sin bipedestación"}, mrc:items("mrc",[1,1,0,1]) } },
+        { id:"d2b", fecha:d(1), tipo:"Control 7 días", evaluador:"Equipo UTAC",
+          vitals:{pas:"186",pad:"104",fc:"96",spo2:"91",fr:"26"},
+          notas:"Cifras tensionales elevadas: se suspende progresión a sedestación y se informa a médico tratante.",
+          scales:{ tct:items("tct",[0,12,0,0]), pass:items("pass",[1,1,0,0,0,1,2,1,1,0,0,0]),
+            tug:{tiempo:"",ayuda:"",asistencia:"No logra realizar la prueba",obs:"",noEval:true,motivo:"Sin control de tronco"},
+            ops:items("ops",[1.6,1.2,1.2,0.8]), barthel:items("barthel",[0,0,0,0,5,0,0,0,0,0]),
+            berg:{items:{},noEval:true,motivo:"Sin bipedestación"}, mrc:items("mrc",[2,1,0,2]) } }
+      ]
+    }
+  ];
+  state.demo = true;
+  guardar();
+}
+
+/* ============================================================
+   ARRANQUE
+   ============================================================ */
+/* ---- icono de la aplicación para la pantalla de inicio del teléfono ---- */
+function almacenamientoDisponible(){
+  try{
+    const k = "__kinestroke_test__";
+    localStorage.setItem(k, "1");
+    const ok = localStorage.getItem(k) === "1";
+    localStorage.removeItem(k);
+    return ok;
+  }catch(e){ return false; }
+}
+
+function avisoSinAlmacenamiento(){
+  if(almacenamientoDisponible()) return;
+  const aviso = el("div");
+  aviso.className = "alert crit";
+  aviso.style.cssText = "margin:0 16px 12px; border-radius:10px; align-items:flex-start";
+  aviso.innerHTML = `<span><b>Este navegador no está guardando los datos.</b><br>
+    Lo que registres aquí se perderá al cerrar la aplicación. Ocurre al abrir el archivo directamente
+    desde el teléfono o en una ventana privada. Ábrela desde el enlace web y agrégala a la pantalla de
+    inicio, o usa un computador. Mientras tanto, exporta el respaldo antes de cerrar.</span>`;
+  const main = document.querySelector("main");
+  main.insertBefore(aviso, main.firstChild);
+}
+
+/* Con dirección propia (GitHub Pages u otro alojamiento) la app se guarda
+   en el dispositivo y abre sin conexión. En el visor de Claude no aplica. */
+function registrarServicioOffline(){
+  try{
+    if(!("serviceWorker" in navigator)) return;
+    if(!/^https?:$/.test(location.protocol)) return;
+    if(window.self !== window.top) return;
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("sw.js").catch(() => {});
+    });
+  }catch(e){}
+}
+
+function registrarIcono(){
+  const img = document.getElementById("brandIcon");
+  if(!img) return;
+  const src = img.getAttribute("src");
+  const yaHayManifiesto = !!document.querySelector('link[rel="manifest"]');
+  [["apple-touch-icon", null], ["icon", "image/png"], ["shortcut icon", "image/png"]].forEach(([rel, tipo]) => {
+    const l = document.createElement("link");
+    l.rel = rel; l.href = src;
+    if(tipo) l.type = tipo;
+    document.head.appendChild(l);
+  });
+  if(yaHayManifiesto) { ponerThemeColor(); return; }
+  try{
+    const manifiesto = {
+      name:"KineStroke — Escalas ACV · UTAC", short_name:"KineStroke",
+      start_url:".", display:"standalone",
+      background_color:"#F3F6FB", theme_color:"#9C27B0",
+      icons:[{src:src, sizes:"384x384", type:"image/png", purpose:"any maskable"}]
+    };
+    const url = URL.createObjectURL(new Blob([JSON.stringify(manifiesto)], {type:"application/manifest+json"}));
+    const m = document.createElement("link");
+    m.rel = "manifest"; m.href = url;
+    document.head.appendChild(m);
+  }catch(e){}
+  ponerThemeColor();
+}
+function ponerThemeColor(){
+  if(document.querySelector('meta[name="theme-color"]')) return;
+  const meta = document.createElement("meta");
+  meta.name = "theme-color"; meta.content = "#9C27B0";
+  document.head.appendChild(meta);
+}
+
+(function init(){
+  registrarServicioOffline();
+  registrarIcono();
+  avisoSinAlmacenamiento();
+  asegurarPersistencia();
+  ponerIconosNav();
+  if(!cargar() || !state.patients.length) sembrarDemo();
+  migrarMRC();
+
+  $("#btnNuevoPaciente").onclick = () => nuevoPaciente();
+  $("#btnBorrarDemo").onclick = () => {
+    state.patients = state.patients.filter(p => !String(p.id).startsWith("demo"));
+    state.demo = false; guardar(); renderCamas();
+  };
+  document.querySelectorAll(".nav button").forEach(b => {
+    b.onclick = () => {
+      if(b.dataset.view === "evaluacion" && !ui.pid && state.patients.length) ui.pid = state.patients[0].id;
+      irA(b.dataset.view);
+    };
+  });
+
+  ui.pid = state.patients.length ? state.patients[0].id : null;
+  irA("pacientes");
+})();
+</script>
+
+</body>
+</html>
